@@ -10,6 +10,17 @@
       "address": "12233444",
       "referralId": null,
       "balance": 0
+    },
+    {
+      "firstName": "Joshua",
+      "lastName": "Davidson",
+      "phone": "08107348257",
+      "country": "Nigeria",
+      "email": "joshuadave890@gmail.com",
+      "password": "12345678",
+      "address": "41 iwopfiow",
+      "referralId": null,
+      "balance": 0
     }
   ],
   "pendingDeposits": [],
