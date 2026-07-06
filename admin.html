@@ -35,7 +35,7 @@
     <script>
         // 1. Load Pending Deposits
         async function loadPending() {
-            const res = await fetch('http://localhost:3000/api/admin/pending');
+            const res = await fetch('https://nexusinvest-xe4k.onrender.com/api/admin/pending');
             const deposits = await res.json();
             const list = document.getElementById('depositList');
             list.innerHTML = ''; 
@@ -54,7 +54,7 @@
         }
 
         async function approve(depositId) {
-            await fetch('http://localhost:3000/api/admin/approve-deposit', {
+            await fetch('https://nexusinvest-xe4k.onrender.com/api/admin/approve-deposit', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ depositId })
@@ -64,7 +64,7 @@
 
         // Fetch all users from the server
 async function loadUsers() {
-    const response = await fetch('http://localhost:3000/api/admin/users');
+    const response = await fetch('https://nexusinvest-xe4k.onrender.com/api/admin/users');
     const users = await response.json();
     const list = document.getElementById('userList');
     
@@ -86,7 +86,7 @@ async function loadUsers() {
 // Function to handle deletion
 async function deleteUser(email) {
     if (confirm(`Are you sure you want to delete ${email}?`)) {
-        await fetch('http://localhost:3000/api/admin/delete-user', {
+        await fetch('https://nexusinvest-xe4k.onrender.com/api/admin/delete-user', {
             method: 'POST', // Using POST to keep it consistent with your current setup
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
@@ -97,7 +97,7 @@ async function deleteUser(email) {
         async function update(email) {
             const newBalance = prompt("Enter new balance for " + email);
             if(newBalance) {
-                await fetch('http://localhost:3000/api/admin/update-balance', {
+                await fetch('https://nexusinvest-xe4k.onrender.com/api/admin/update-balance', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, newBalance })
