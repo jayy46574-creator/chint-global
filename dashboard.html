@@ -101,7 +101,7 @@
                 </div>
             </header>
 
-            <main class="p-8 flex-1">
+        <main class="p-6 pb-28 md:p-8 flex-1">
 
                 <section id="view-dashboard" class="view-section active space-y-6">
 
@@ -290,6 +290,25 @@
             </main>
         </div>
     </div>
+
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-darkpanel border-t border-gray-800 flex justify-around items-center z-50 px-2 py-3 shadow-[0_-4px_10px_rgba(0,0,0,0.3)]">
+    
+    <button data-target="view-dashboard" class="flex flex-col items-center p-2 text-white bg-gray-900 rounded-xl min-w-[70px] transition-all">
+        <i class="ph ph-squares-four text-2xl mb-1"></i>
+        <span class="text-[10px] font-bold">Home</span>
+    </button>
+    
+    <button data-target="view-deposit" class="flex flex-col items-center p-2 text-gray-400 hover:text-white rounded-xl min-w-[70px] transition-all">
+        <i class="ph ph-arrow-circle-down text-2xl mb-1"></i>
+        <span class="text-[10px] font-bold">Deposit</span>
+    </button>
+    
+    <button data-target="view-withdraw" class="flex flex-col items-center p-2 text-gray-400 hover:text-white rounded-xl min-w-[70px] transition-all">
+        <i class="ph ph-arrow-circle-up text-2xl mb-1"></i>
+        <span class="text-[10px] font-bold">Withdraw</span>
+    </button>
+
+</div>
 
     <script>
         // 1. Logic to fetch backend balance
