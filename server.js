@@ -192,16 +192,21 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
 app.post('/api/admin/update-balance', async (req, res) => {
     try {
         const { email, newBalance } = req.body;
-        const user = await User.findOne({ email });
+        console.log(`DEBUG: Updating balance for ${email} to ${newBalance}`); // Check Render logs for this!
         
-        if (user) {
-            user.balance = parseFloat(newBalance);
-            await user.save();
-            res.json({ success: true, message: 'Balance updated successfully' });
-        } else {
-            res.status(404).json({ success: false, message: 'User not found' });
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
+
+        // Ensure we save it as a number
+        user.balance = parseFloat(newBalance);
+        await user.save();
+        
+        console.log("✅ Balance saved successfully!");
+        res.json({ success: true, message: 'Balance updated successfully' });
     } catch (error) {
+        console.error("❌ Error updating balance:", error);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
