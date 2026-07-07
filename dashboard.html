@@ -531,32 +531,24 @@ async function loadDashboard() {
             }
         });
     </script>
+    
 <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
 
-    // Toggle menu visibility
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('-translate-x-full');
-        sidebar.classList.toggle('translate-x-0');
-    });
-
-    // Close menu when a navigation link is clicked
-    document.querySelectorAll('nav a, aside button').forEach(link => {
-        link.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            sidebar.classList.remove('translate-x-0');
+        // Toggle menu visibility
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
         });
-    });
 
-    // Close menu when clicking on the main content area (mobile only)
-    document.querySelector('main').addEventListener('click', () => {
-        if (sidebar.classList.contains('translate-x-0')) {
-            sidebar.classList.add('-translate-x-full');
-            sidebar.classList.remove('translate-x-0');
-        }
-    });
-</script>
+        // Close menu when a navigation link or the background is clicked
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+            }
+        });
+    </script>
 </body>
-
 </html>
