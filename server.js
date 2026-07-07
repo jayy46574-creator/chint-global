@@ -188,6 +188,43 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
+// Admin: Update User Balance
+app.post('/api/admin/update-balance', async (req, res) => {
+    try {
+        const { email, newBalance } = req.body;
+        const user = await User.findOne({ email });
+        
+        if (user) {
+            user.balance = parseFloat(newBalance);
+            await user.save();
+            res.json({ success: true, message: 'Balance updated successfully' });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// Admin: Delete User
+app.post('/api/admin/delete-user', async (req, res) => {
+    try {
+        const { email } = req.body;
+        const result = await User.deleteOne({ email });
+        
+        if (result.deletedCount > 0) {
+            // Optional: Also delete their transactions and deposits to keep the database clean
+            await Transaction.deleteMany({ email });
+            await Deposit.deleteMany({ email });
+            
+            res.json({ success: true, message: 'User deleted successfully' });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
 
 // Get User Transactions
 app.get('/api/transactions', async (req, res) => {
@@ -196,6 +233,74 @@ app.get('/api/transactions', async (req, res) => {
         res.json(userTransactions);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
+    }
+});
+// ==========================================
+// ADDITIONAL REQUIRED ROUTES
+// ==========================================
+
+// 1. Get Logged-in User Info for Dashboard
+app.get('/api/user', async (req, res) => {
+    try {
+        const { email } = req.query;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        // Send back user data safely (omit password for security)
+        res.json({
+            success: true,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            balance: user.balance,
+            email: user.email
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// 2. Get All Users for Admin Panel List
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        const users = await User.find({}, '-password'); // Find all users, exclude passwords
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// 3. Process User Withdrawal Request
+app.post('/api/withdraw', async (req, res) => {
+    try {
+        const { email, amount } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        if (user.balance < amount) {
+            return res.status(400).json({ success: false, message: 'Insufficient balance' });
+        }
+
+        // Deduct the balance
+        user.balance -= parseFloat(amount);
+        await user.save();
+
+        // Create a record in Transaction History
+        const txid = "TXN" + Math.floor(100000 + Math.random() * 900000);
+        await Transaction.create({
+            txid,
+            email,
+            type: 'Withdrawal',
+            amount: parseFloat(amount),
+            status: 'Completed'
+        });
+
+        res.json({ success: true, message: 'Withdrawal processed successfully!' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 

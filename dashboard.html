@@ -339,6 +339,7 @@
 async function loadDashboard() {
     // 1. Get the logged-in user's email 
     const email = localStorage.getItem('currentUser');
+    console.log("Dashboard is fetching data for email:", email); // Check this in Inspect > Console
 
     if (!email) {
         window.location.href = 'login.html';
@@ -350,7 +351,7 @@ async function loadDashboard() {
         const btcRate = await updateMarketData();
 
         // 3. Fetch User Data (Balance & Name) from your live backend
-        const userResponse = await fetch(`https://nexusplatform.onrender.com/api/user?email=${email}`);
+        const userResponse = await fetch(`https://nexusplatform.onrender.com/api/user?email=${email}&t=${new Date().getTime()}`);
         const userData = await userResponse.json();
 
         if (userData.success) {
