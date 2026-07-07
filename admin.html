@@ -63,6 +63,7 @@
         }
 
         // Fetch all users from the server
+
 async function loadUsers() {
     const response = await fetch('https://nexusplatform.onrender.com/api/admin/users');
     const users = await response.json();
@@ -72,7 +73,7 @@ async function loadUsers() {
         <div class="p-4 border-b border-gray-800 flex justify-between items-center">
             <div>
                 <p class="font-bold">${u.email}</p>
-                <p class="text-sm text-gray-400">Password: <span class="font-mono text-orange-500">${u.password}</span></p>
+                <p class="text-sm text-gray-400">Password: <span class="font-mono text-green-400">${u.password}</span></p>
                 <p class="text-sm text-gray-500">Balance: $${u.balance}</p>
             </div>
             <div class="space-x-2">

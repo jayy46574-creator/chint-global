@@ -64,9 +64,7 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 // ==========================================
 // 3. API ROUTES
 // ==========================================
-
-
-// 2. Update your signup route
+// 1. Update your signup route (Plain Text)
 app.post('/api/signup', async (req, res) => {
     try {
         const { firstName, lastName, phone, country, email, password, address, referralId } = req.body;
@@ -76,14 +74,10 @@ app.post('/api/signup', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Email already in use.' });
         }
 
-        // HASH THE PASSWORD BEFORE SAVING
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        // Save the user with the HASHED password
+        // Save the user with the RAW plain-text password
         const newUser = new User({ 
             firstName, lastName, phone, country, email, 
-            password: hashedPassword, // Store the hash, NOT the raw password
+            password: password, // Store exactly what the user typed
             address, referralId 
         });
         await newUser.save();
@@ -95,14 +89,14 @@ app.post('/api/signup', async (req, res) => {
     }
 });
 
-// Login Route
+// 2. Update your Login Route (Plain Text Comparison)
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
-        // Compare the incoming password with the stored hash
-        if (user && await bcrypt.compare(password, user.password)) {
+        // Compare the incoming password directly with the stored plain-text password
+        if (user && password === user.password) {
             res.json({ success: true, balance: user.balance });
         } else {
             res.status(401).json({ success: false, message: 'Invalid credentials' });
@@ -112,11 +106,18 @@ app.post('/api/login', async (req, res) => {
     }
 });
 // Get Specific User Data
+// Find this in server.js and update it:
 app.get('/api/user', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.query.email });
         if (user) {
-            res.json({ balance: user.balance, email: user.email });
+            // FIX: Add firstName and lastName to this JSON response
+            res.json({ 
+                balance: user.balance, 
+                email: user.email,
+                firstName: user.firstName, 
+                lastName: user.lastName 
+            });
         } else {
             res.status(404).json({ message: 'User not found' });
         }

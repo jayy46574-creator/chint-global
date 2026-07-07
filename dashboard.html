@@ -351,7 +351,7 @@ async function loadDashboard() {
         const btcRate = await updateMarketData();
 
         // 3. Fetch User Data (Balance & Name) from your live backend
-        const userResponse = await fetch(`https://nexusplatform.onrender.com/api/user?email=${email}&t=${new Date().getTime()}`);
+        const userResponse = await fetch(`https://nexusplatform.onrender.com/api/user?email=${encodeURIComponent(email)}&t=${new Date().getTime()}`);
         const userData = await userResponse.json();
 
         if (userData.success) {
