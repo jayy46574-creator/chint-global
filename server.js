@@ -235,40 +235,6 @@ app.get('/api/transactions', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-// ==========================================
-// ADDITIONAL REQUIRED ROUTES
-// ==========================================
-
-// 1. Get Logged-in User Info for Dashboard
-app.get('/api/user', async (req, res) => {
-    try {
-        const { email } = req.query;
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
-        // Send back user data safely (omit password for security)
-        res.json({
-            success: true,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            balance: user.balance,
-            email: user.email
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
-
-// 2. Get All Users for Admin Panel List
-app.get('/api/admin/users', async (req, res) => {
-    try {
-        const users = await User.find({}, '-password'); // Find all users, exclude passwords
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
 
 // 3. Process User Withdrawal Request
 app.post('/api/withdraw', async (req, res) => {
