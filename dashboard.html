@@ -92,7 +92,7 @@
                             <i class="ph ph-user text-xl"></i>
                         </div>
                         <div class="hidden sm:block text-left">
-                            <p id="userEmailDisplay" class="text-sm font-medium">Loading...</p>
+                            <p id="userGreeting" class="text-sm font-medium">Loading...</p>
                             <span class="text-xs text-green-400 flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Network Active
                             </span>
@@ -115,7 +115,7 @@
                             class="grid grid-cols-1 md:grid-cols-2 gap-8 divide-y md:divide-y-0 md:divide-x divide-gray-700">
                             <div>
                                 <p class="text-xs text-gray-400 mb-2">Fiat Value (USD)</p>
-                                <h3 id="balanceDisplayUSD" class="text-4xl font-black font-mono text-white">$0.00</h3>
+                                <h3 id="userBalanceText" class="text-4xl font-black font-mono text-white">$0.00</h3>
                             </div>
 
                             <div class="md:pl-8 pt-6 md:pt-0">
@@ -336,69 +336,67 @@
                 return 67420.50; // Fallback price if API is down
             }
         }
+async function loadDashboard() {
+    // 1. Get the logged-in user's email 
+    const email = localStorage.getItem('currentUser');
 
-        async function loadDashboard() {
-            const email = localStorage.getItem('currentUser');
+    if (!email) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-            if (!email) {
-                window.location.href = 'login.html';
-                return;
-            }
+    try {
+        // 2. Fetch the live BTC Price
+        const btcRate = await updateMarketData();
 
-            document.getElementById('userEmailDisplay').innerText = email;
+        // 3. Fetch User Data (Balance & Name) from your live backend
+        const userResponse = await fetch(`https://nexusplatform.onrender.com/api/user?email=${email}`);
+        const userData = await userResponse.json();
 
-            // --- ADD THESE TWO LINES ---
-            // Fetch price first
-            const btcRate = await updateMarketData();
+        if (userData.success) {
+            // Update the greeting (using the ID you just changed)
+            document.getElementById('userGreeting').innerText = `Welcome, ${userData.firstName}!`;
 
-            try {
-                // Fetch User Balance Data
-                const response = await fetch(`https://nexusinvest-xe4k.onrender.com/api/user?email=${email}`);
-                const data = await response.json();
+            // Calculate balances
+            const usdBalance = userData.balance;
+            const btcBalance = (usdBalance / btcRate).toFixed(8);
 
-                if (data.balance !== undefined) {
-                    const usdBalance = data.balance;
-
-                    // Now btcRate is available here to use in the math!
-                    const btcBalance = (usdBalance / btcRate).toFixed(8);
-
-                    document.getElementById('balanceDisplayUSD').innerText = `$${usdBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                    document.getElementById('balanceDisplayBTC').innerText = `${btcBalance} BTC`;
-                }
-
-                // ... (rest of your existing transaction history code remains the same)
-                // Fetch User Transaction History
-                const txResponse = await fetch(`https://nexusinvest-xe4k.onrender.com/api/transactions?email=${email}`);
-                const history = await txResponse.json();
-                const tableBody = document.getElementById('transactionHistoryTable');
-
-                tableBody.innerHTML = ''; // Clear out old placeholders
-
-                if (history.length === 0) {
-                    tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="py-4 text-center text-gray-500 text-xs">No transactions recorded yet.</td>
-                    </tr>`;
-                } else {
-                    history.forEach(tx => {
-                        tableBody.innerHTML += `
-                        <tr class="hover:bg-gray-800/20">
-                            <td class="py-3 font-mono text-xs text-gray-500">${tx.txid}</td>
-                            <td class="py-3 font-medium text-gray-200">${tx.type}</td>
-                            <td class="py-3 font-mono text-orange-400">+$${tx.amount.toFixed(2)}</td>
-                            <td class="py-3">
-                                <span class="bg-green-500/10 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full">
-                                    ${tx.status}
-                                </span>
-                            </td>
-                        </tr>`;
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
+            // Update the balance text (using the ID you just changed)
+            document.getElementById('userBalanceText').innerText = `$${usdBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('balanceDisplayBTC').innerText = `${btcBalance} BTC`;
         }
 
+        // 4. Fetch User Transaction History
+        const txResponse = await fetch(`https://nexusplatform.onrender.com/api/transactions?email=${email}`);
+        const history = await txResponse.json();
+        const tableBody = document.getElementById('transactionHistoryTable');
+
+        tableBody.innerHTML = ''; // Clear out old placeholders
+
+        if (history.length === 0) {
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="py-4 text-center text-gray-500 text-xs">No transactions recorded yet.</td>
+            </tr>`;
+        } else {
+            history.forEach(tx => {
+                tableBody.innerHTML += `
+                <tr class="hover:bg-gray-800/20">
+                    <td class="py-3 font-mono text-xs text-gray-500">${tx.txid}</td>
+                    <td class="py-3 font-medium text-gray-200">${tx.type}</td>
+                    <td class="py-3 font-mono text-orange-400">+$${tx.amount.toFixed(2)}</td>
+                    <td class="py-3">
+                        <span class="bg-green-500/10 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full">
+                            ${tx.status}
+                        </span>
+                    </td>
+                </tr>`;
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+    }
+}
         // Run this immediately
         loadDashboard();
 
@@ -430,6 +428,7 @@
                 button.classList.remove('text-gray-400');
             });
         });
+
         // 3. Logout function
         function logout() {
             localStorage.removeItem('currentUser');
@@ -447,7 +446,7 @@
             }
 
             try {
-                const response = await fetch('https://nexusinvest-xe4k.onrender.com/api/deposit', {
+                const response = await fetch('https://nexusplatform.onrender.com/api/deposit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, amount })
@@ -500,7 +499,7 @@
             const email = localStorage.getItem('currentUser');
 
             try {
-                const response = await fetch('https://nexusinvest-xe4k.onrender.com/api/withdraw', {
+                const response = await fetch('https://nexusplatform.onrender.com/api/withdraw', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, amount, address })
@@ -526,19 +525,6 @@
             } catch (error) {
                 alert("Server connection failed.");
             }
-        });
-        // 6. Contact Us Logic
-        document.getElementById('contactForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // For now, trigger a success notice and reset the form
-            alert("Message sent successfully! Support will review it shortly.");
-
-            document.getElementById('contactForm').reset();
-
-            // Redirect back to main dashboard view automatically
-            document.querySelector('[data-target="view-dashboard"]').click();
-            loadDashboard();
         });
     </script>
 </body>
