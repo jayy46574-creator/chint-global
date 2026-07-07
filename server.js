@@ -113,6 +113,7 @@ app.get('/api/user', async (req, res) => {
         if (user) {
             // FIX: Add firstName and lastName to this JSON response
             res.json({ 
+                success: true,
                 balance: user.balance, 
                 email: user.email,
                 firstName: user.firstName, 
@@ -146,6 +147,17 @@ app.get('/api/admin/users', async (req, res) => {
         const users = await User.find({}, '-__v'); // fetch all, ignore version key
         res.json(users);
     } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+// Admin: Get all pending deposits
+app.get('/api/admin/pending', async (req, res) => {
+    try {
+        // Find all deposits where the status is exactly 'Pending'
+        const pendingDeposits = await Deposit.find({ status: 'Pending' });
+        res.json(pendingDeposits);
+    } catch (error) {
+        console.error("Error fetching pending deposits:", error);
         res.status(500).json({ message: 'Server error' });
     }
 });
