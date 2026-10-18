@@ -196,19 +196,33 @@
                     </div>
 
                     <!-- Clean full-width address panel -->
-                    <div class="space-y-3">
-                        <label class="text-sm font-semibold text-gray-400 block tracking-wide">System Destination
-                            Address</label>
-                        <div
-                            class="bg-gray-900 p-4 rounded-xl border border-gray-800 font-mono text-base sm:text-lg text-orange-500 select-all break-all tracking-wide shadow-inner">
-                            bc1q5cqarnp7g55ntncx0fm7wghxcd9e2sunek59rc
-                        </div>
-                        <span class="text-xs text-amber-500 flex items-center gap-1">
-                            <span class="inline-block animate-pulse">⚠️</span> Send only native BTC to this target
-                            address.
-                        </span>
-                    </div>
+                    <!-- Clean full-width address panel with static QR code image -->
+<div class="space-y-4 text-center sm:text-left">
+    <label class="text-sm font-semibold text-gray-400 block tracking-wide">System Destination Address</label>
+    
+    <div class="flex flex-col sm:flex-row items-center gap-4 bg-gray-900 p-4 rounded-xl border border-gray-800 shadow-inner">
+        <!-- Static QR Code Image -->
+        <div class="p-2 bg-white rounded-lg flex-shrink-0">
+            <img src="btc.jpg" alt="BTC Deposit QR Code" class="w-28 h-28 object-contain">
+        </div>
+        
+        <!-- Wallet Address Display & Copy Option -->
+        <div class="overflow-hidden w-full space-y-2">
+            <p class="text-xs text-gray-400">Scan or copy BTC Address:</p>
+            <div id="btcAddressText" class="font-mono text-sm sm:text-base text-orange-500 select-all break-all tracking-wide font-bold bg-darkbg/50 p-2.5 rounded-lg border border-gray-800">
+                bc1q5rtu7cuy4h3w9cef2pry0uwvyzeyv3vd5a848a
+            </div>
+            
+            <button type="button" onclick="copyWalletAddress()" class="text-xs text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
+                <i class="ph ph-copy"></i> Copy Address
+            </button>
+        </div>
+    </div>
 
+    <span class="text-xs text-amber-500 flex items-center gap-1 justify-center sm:justify-start">
+        <span class="inline-block animate-pulse">⚠️</span> Send only native BTC to this target address.
+    </span>
+</div>
                     <hr class="border-gray-800/60">
 
                     <form id="depositForm" class="space-y-4">
@@ -486,6 +500,14 @@ async function loadDashboard() {
                 alert("Server connection failed.");
             }
         });
+        function copyWalletAddress() {
+    const address = document.getElementById('btcAddressText').innerText.trim();
+    navigator.clipboard.writeText(address).then(() => {
+        alert("Wallet address copied to clipboard!");
+    }).catch(err => {
+        console.error("Failed to copy address: ", err);
+    });
+}
         // --- 5. Withdrawal Multi-Step Logic ---
 
         // Transition from Step 1 to Step 2
