@@ -10,7 +10,26 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const app = express();
-app.use(cors());
+
+// Whitelist ONLY Chint Global
+const allowedOrigins = [
+  'https://chint-global.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: This origin is not allowed.'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Use the variable, not the hardcoded string
@@ -105,13 +124,12 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error during login.' });
     }
 });
+
 // Get Specific User Data
-// Find this in server.js and update it:
 app.get('/api/user', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.query.email });
         if (user) {
-            // FIX: Add firstName and lastName to this JSON response
             res.json({ 
                 success: true,
                 balance: user.balance, 
@@ -150,10 +168,10 @@ app.get('/api/admin/users', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 // Admin: Get all pending deposits
 app.get('/api/admin/pending', async (req, res) => {
     try {
-        // Find all deposits where the status is exactly 'Pending'
         const pendingDeposits = await Deposit.find({ status: 'Pending' });
         res.json(pendingDeposits);
     } catch (error) {
@@ -167,19 +185,16 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
     try {
         const { depositId } = req.body;
         
-        // Find the pending deposit
         const deposit = await Deposit.findById(depositId);
         if (!deposit || deposit.status !== 'Pending') {
             return res.status(404).json({ success: false, message: 'Valid pending deposit not found' });
         }
 
-        // Find the user and update their balance
         const user = await User.findOne({ email: deposit.email });
         if (user) {
             user.balance += deposit.amount;
             await user.save();
 
-            // Log the transaction
             const txid = "TXN" + Math.floor(100000 + Math.random() * 900000);
             await Transaction.create({
                 txid,
@@ -189,7 +204,6 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
                 status: 'Completed'
             });
 
-            // Update deposit status
             deposit.status = 'Approved';
             await deposit.save();
 
@@ -201,18 +215,18 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
+
 // Admin: Update User Balance
 app.post('/api/admin/update-balance', async (req, res) => {
     try {
         const { email, newBalance } = req.body;
-        console.log(`DEBUG: Updating balance for ${email} to ${newBalance}`); // Check Render logs for this!
+        console.log(`DEBUG: Updating balance for ${email} to ${newBalance}`);
         
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
 
-        // Ensure we save it as a number
         user.balance = parseFloat(newBalance);
         await user.save();
         
@@ -231,7 +245,6 @@ app.post('/api/admin/delete-user', async (req, res) => {
         const result = await User.deleteOne({ email });
         
         if (result.deletedCount > 0) {
-            // Optional: Also delete their transactions and deposits to keep the database clean
             await Transaction.deleteMany({ email });
             await Deposit.deleteMany({ email });
             
@@ -254,7 +267,7 @@ app.get('/api/transactions', async (req, res) => {
     }
 });
 
-// 3. Process User Withdrawal Request
+// Process User Withdrawal Request
 app.post('/api/withdraw', async (req, res) => {
     try {
         const { email, amount } = req.body;
@@ -268,11 +281,9 @@ app.post('/api/withdraw', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Insufficient balance' });
         }
 
-        // Deduct the balance
         user.balance -= parseFloat(amount);
         await user.save();
 
-        // Create a record in Transaction History
         const txid = "TXN" + Math.floor(100000 + Math.random() * 900000);
         await Transaction.create({
             txid,
