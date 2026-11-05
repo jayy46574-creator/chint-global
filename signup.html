@@ -3,76 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | Nexus Vest</title>
+    <title>Sign Up | Chint Global</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0f172a',
+                            900: '#0a101d',
+                        },
+                        brandBlue: {
+                            DEFAULT: '#1e40af',
+                            hover: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-950 text-white min-h-screen flex items-center justify-center p-6 font-sans">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-6 font-sans">
 
-    <div class="w-full max-w-md bg-gray-900 p-10 rounded-3xl border border-gray-800 shadow-2xl">
+    <div class="w-full max-w-md bg-white p-10 rounded-3xl border border-slate-200 shadow-xl">
         <!-- Branding Header -->
+        <div class="flex justify-center mb-4">
+            <img src="logo.jpeg" alt="Chint Global Logo" class="w-12 h-12 rounded-xl object-cover shadow-lg shadow-blue-500/30">
+        </div>
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-black text-orange-500 mb-2">Welcome to Nexus</h1>
-            <p class="text-gray-400 text-sm">Create an account to start your journey.</p>
+            <h1 class="text-3xl font-black text-blue-700 mb-2">Welcome to Chint Global</h1>
+            <p class="text-slate-500 text-sm">Create an account to start your journey.</p>
         </div>
 <!-- Signup Container -->
-<div class="max-w-xl w-full bg-darkpanel p-8 rounded-3xl border border-gray-800 shadow-2xl">
+<div class="max-w-xl w-full bg-white p-8 rounded-2xl border border-slate-200 shadow-inner">
   <div class="text-center mb-6">
-    <h3 class="text-2xl font-black tracking-wide text-white">Create Account</h3>
-    <p class="text-xs text-gray-400 mt-1">Join the Nexus Vest investment platform</p>
+    <h3 class="text-2xl font-black tracking-wide text-slate-900">Create Account</h3>
+    <p class="text-xs text-slate-500 mt-1">Join the Chint Global investment platform</p>
   </div>
 
   <form id="signupForm" class="space-y-4">
     <!-- First & Last Name Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label class="text-xs font-medium mb-1.5 block text-gray-400">First Name</label>
-        <input type="text" id="firstName" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+        <label class="text-xs font-medium mb-1.5 block text-slate-500">First Name</label>
+        <input type="text" id="firstName" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800">
       </div>
       <div>
-        <label class="text-xs font-medium mb-1.5 block text-gray-400">Last Name</label>
-        <input type="text" id="lastName" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+        <label class="text-xs font-medium mb-1.5 block text-slate-500">Last Name</label>
+        <input type="text" id="lastName" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800">
       </div>
     </div>
 
     <!-- Phone & Country Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label class="text-xs font-medium mb-1.5 block text-gray-400">Phone Number</label>
-        <input type="tel" id="phone" required placeholder="+1 (555) 000-0000" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+        <label class="text-xs font-medium mb-1.5 block text-slate-500">Phone Number</label>
+        <input type="tel" id="phone" required placeholder="+1 (555) 000-0000" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 placeholder-slate-400">
       </div>
       <div>
-        <label class="text-xs font-medium mb-1.5 block text-gray-400">Country</label>
-        <input type="text" id="country" required placeholder="United States" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+        <label class="text-xs font-medium mb-1.5 block text-slate-500">Country</label>
+        <input type="text" id="country" required placeholder="United States" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 placeholder-slate-400">
       </div>
     </div>
 
     <!-- Email Field -->
     <div>
-      <label class="text-xs font-medium mb-1.5 block text-gray-400">Email Address</label>
-      <input type="email" id="email" required placeholder="name@example.com" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+      <label class="text-xs font-medium mb-1.5 block text-slate-500">Email Address</label>
+      <input type="email" id="email" required placeholder="name@example.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 placeholder-slate-400">
     </div>
 
     <!-- Password Field -->
     <div>
-      <label class="text-xs font-medium mb-1.5 block text-gray-400">Password</label>
-      <input type="password" id="password" required placeholder="••••••••" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+      <label class="text-xs font-medium mb-1.5 block text-slate-500">Password</label>
+      <input type="password" id="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 placeholder-slate-400">
     </div>
 
     <!-- Home Address Field -->
     <div>
-      <label class="text-xs font-medium mb-1.5 block text-gray-400">Home Address</label>
-      <input type="text" id="address" required placeholder="123 Main St, Apt 4B" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white">
+      <label class="text-xs font-medium mb-1.5 block text-slate-500">Home Address</label>
+      <input type="text" id="address" required placeholder="123 Main St, Apt 4B" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 placeholder-slate-400">
     </div>
 
     <!-- Referral ID Field (Optional) -->
     <div>
-      <label class="text-xs font-medium mb-1.5 block text-gray-400">Referral ID <span class="text-gray-600 text-[10px]">(Optional)</span></label>
-      <input type="text" id="referralId" placeholder="NEXUS-XXXX" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm focus:border-orange-500 focus:outline-none text-white font-mono">
+      <label class="text-xs font-medium mb-1.5 block text-slate-500">Referral ID <span class="text-slate-400 text-[10px]">(Optional)</span></label>
+      <input type="text" id="referralId" placeholder="CHINT-XXXX" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 placeholder-slate-400 font-mono">
     </div>
 
     <!-- Submit Button -->
-    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-green-600 text-white rounded-xl py-3 font-medium text-sm hover:opacity-95 transition mt-2">Create Account</button>
+    <button type="submit" class="w-full bg-gradient-to-r from-blue-700 to-navy-900 text-white rounded-xl py-3 font-medium text-sm hover:opacity-95 transition mt-2 shadow-md">Create Account</button>
   </form>
+  <p class="mt-6 text-center text-slate-500 text-xs">Already have an account? <a href="login.html" class="text-blue-600 font-semibold hover:underline">Sign in</a></p>
+</div>
 </div>
 
 <script>

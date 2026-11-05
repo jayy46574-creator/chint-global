@@ -4,31 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Login</title>
+    <title>Chint Global Login</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0f172a',
+                            900: '#0a101d',
+                        },
+                        brandBlue: {
+                            DEFAULT: '#1e40af',
+                            hover: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 
-
-<body>
-
-    <body class="bg-gray-950 text-white min-h-screen flex items-center justify-center p-4 font-sans">
-        <div class="w-full max-w-md bg-gray-900 p-8 rounded-3xl border border-gray-800 shadow-2xl">
-            <h2 class="text-3xl font-bold mb-6 text-center">Welcome Back</h2>
-            <form id="loginForm" class="space-y-4">
-                <input type="email" id="email" placeholder="Email Address"
-                    class="w-full bg-gray-800 border border-gray-700 p-4 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
-                <input type="password" id="password" placeholder="Password"
-                    class="w-full bg-gray-800 border border-gray-700 p-4 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
-                <button type="submit"
-                    class="w-full bg-orange-500 hover:bg-orange-600 p-4 rounded-xl font-bold transition-all">Sign
-                    In</button>
-            </form>
-            <p class="mt-6 text-center text-gray-400 text-sm">Don't have an account? <a href="signup.html"
-                    class="text-orange-500 hover:underline">Sign up</a></p>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-4 font-sans">
+    <div class="w-full max-w-md bg-white p-8 rounded-3xl border border-slate-200 shadow-xl">
+        <div class="flex justify-center mb-6">
+            <img src="logo.jpeg" alt="Chint Global Logo" class="w-12 h-12 rounded-xl object-cover shadow-lg shadow-blue-500/30">
         </div>
-    </body>
+        <h2 class="text-3xl font-bold mb-6 text-center text-slate-900">Welcome Back</h2>
+        <form id="loginForm" class="space-y-4">
+            <input type="email" id="email" placeholder="Email Address"
+                class="w-full bg-slate-50 border border-slate-300 p-4 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none text-slate-800 placeholder-slate-400">
+            <input type="password" id="password" placeholder="Password"
+                class="w-full bg-slate-50 border border-slate-300 p-4 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none text-slate-800 placeholder-slate-400">
+            <button type="submit"
+                class="w-full bg-blue-700 hover:bg-blue-800 text-white p-4 rounded-xl font-bold transition-all shadow-md">Sign
+                In</button>
+        </form>
+        <p class="mt-6 text-center text-slate-500 text-sm">Don't have an account? <a href="signup.html"
+                class="text-blue-600 font-semibold hover:underline">Sign up</a></p>
+    </div>
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
