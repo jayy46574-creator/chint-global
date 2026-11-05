@@ -356,7 +356,8 @@
                             <button class="text-xs text-blue-400 hover:text-blue-300 font-medium">Mark all as read</button>
                         </div>
                         
-                        <div class="space-y-4">
+                        <div id="notificationsList" class="space-y-4">
+                            <!-- Static Initial Notifications -->
                             <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
                                 <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
                                     <i class="ph ph-info text-blue-500 text-xl"></i>
@@ -618,7 +619,7 @@
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexus.investment01@gmail.com"
                             target="_blank"
                             class="text-base font-semibold text-white hover:text-orange-500 transition-colors duration-200 font-mono tracking-wide inline-block">
-                            nexus.investment01@gmail.com
+                            chintglobal82@gmail.com
                         </a>
                     </div>
                 </section>
@@ -694,11 +695,36 @@
                     document.getElementById('balanceDisplayBTC').innerText = `${btcBalance} BTC`;
                 }
 
-                const txResponse = await fetch(`https://nexusplatform.onrender.com/api/transactions?email=${email}`);
+                const txResponse = await fetch(`https://nexusplatform.onrender.com/api/transactions?email=${encodeURIComponent(email)}`);
                 const history = await txResponse.json();
                 const tableBody = document.getElementById('transactionHistoryTable');
+                const notificationsList = document.getElementById('notificationsList');
 
                 tableBody.innerHTML = ''; 
+
+                // Preserve static system/welcome messages in notifications list
+                notificationsList.innerHTML = `
+                    <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="ph ph-info text-blue-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white mb-1">Welcome to Chint Global</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
+                            <span class="text-[10px] text-gray-500 mt-2 block">System Message</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition opacity-70">
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="ph ph-shield-check text-green-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white mb-1">Account Verified</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">Your account has been successfully verified. You now have full access to all withdrawal features.</p>
+                            <span class="text-[10px] text-gray-500 mt-2 block">Admin Approval</span>
+                        </div>
+                    </div>
+                `;
 
                 if (history.length === 0) {
                     tableBody.innerHTML = `
@@ -707,17 +733,40 @@
                     </tr>`;
                 } else {
                     history.forEach(tx => {
+                        // Dynamic status badge styling
+                        const isPending = tx.status === 'Pending';
+                        const statusClass = isPending 
+                            ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' 
+                            : 'bg-green-500/10 text-emerald-400 border border-green-500/20';
+
                         tableBody.innerHTML += `
-                        <tr class="hover:bg-gray-800/20">
-                            <td class="py-4 px-2 font-mono text-xs text-gray-500">${tx.txid}</td>
+                        <tr class="hover:bg-gray-800/25">
+                            <td class="py-4 px-2 font-mono text-xs text-gray-400">${tx.txid}</td>
                             <td class="py-4 px-2 font-medium text-gray-200">${tx.type}</td>
-                            <td class="py-4 px-2 font-mono text-orange-400">+$${tx.amount.toFixed(2)}</td>
+                            <td class="py-4 px-2 font-mono text-orange-400">$${tx.amount.toFixed(2)}</td>
                             <td class="py-4 px-2">
-                                <span class="bg-green-500/10 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full border border-green-500/20">
+                                <span class="${statusClass} text-xs px-2.5 py-0.5 rounded-full inline-block">
                                     ${tx.status}
                                 </span>
                             </td>
                         </tr>`;
+
+                        // Populate notifications feed with successful/completed deposits and withdrawals
+                        if (tx.status === 'Completed' || tx.status === 'Approved') {
+                            const isDeposit = tx.type.toLowerCase().includes('deposit');
+                            notificationsList.innerHTML += `
+                                <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                                        <i class="ph ph-check-circle text-emerald-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white mb-1">${tx.type} Successful</h4>
+                                        <p class="text-xs text-gray-400 leading-relaxed">Your ${tx.type.toLowerCase()} of <b>$${tx.amount.toFixed(2)}</b> (TXID: ${tx.txid}) has been successfully processed and approved.</p>
+                                        <span class="text-[10px] text-gray-500 mt-2 block">${new Date(tx.createdAt || Date.now()).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }
                     });
                 }
             } catch (error) {
@@ -861,7 +910,7 @@
             navigator.clipboard.writeText(address).then(() => alert("Wallet address copied!"));
         }
         
-        // Updated Withdraw Logic (No PIN step required)
+        // Updated Withdraw Logic
         document.getElementById('withdrawForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const amount = document.getElementById('withdrawAmount').value;
@@ -878,7 +927,7 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    alert("Withdrawal successful!");
+                    alert("An Admin will process your withdrawal request shortly");
                     document.getElementById('withdrawForm').reset();
                     document.querySelector('[data-target="view-transactions"]').click();
                     loadDashboard();

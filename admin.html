@@ -2,59 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <title>Chint Global Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-950 text-white p-10">
+<body class="bg-slate-950 text-white p-10">
     
-    <h1 class="text-3xl font-bold mb-8">Admin Control Panel</h1>
+    <h1 class="text-3xl font-bold mb-8">Chint Global Admin Control Panel</h1>
     
+    <!-- Pending Deposits Section -->
     <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Pending Deposits</h2>
-        <div class="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+        <h2 class="text-xl font-semibold mb-4">Chint Global Pending Deposits</h2>
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
             <table class="w-full text-left">
-                <thead class="bg-gray-800">
+                <thead class="bg-slate-800">
                     <tr>
                         <th class="p-4">User Email</th>
                         <th class="p-4">Amount</th>
                         <th class="p-4">Action</th>
                     </tr>
                 </thead>
-                <tbody id="depositList" class="divide-y divide-gray-800">
-                    </tbody>
+                <tbody id="depositList" class="divide-y divide-slate-800"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- Pending Withdrawals Section -->
+    <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">Chint Global Pending Withdrawals</h2>
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-800">
+                    <tr>
+                        <th class="p-4">User Email</th>
+                        <th class="p-4">Amount</th>
+                        <th class="p-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawalList" class="divide-y divide-slate-800"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- User Accounts Section -->
     <div>
-        <h2 class="text-xl font-semibold mb-4">User Accounts</h2>
-        <div id="userList" class="bg-gray-900 p-6 rounded-2xl border border-gray-800">
-            </div>
+        <h2 class="text-xl font-semibold mb-4">Chint Global User Accounts</h2>
+        <div id="userList" class="bg-slate-900 p-6 rounded-2xl border border-slate-800"></div>
     </div>
 
     <script>
-        // 1. Load Pending Deposits
-        async function loadPending() {
-            const res = await fetch('https://nexusplatform.onrender.com/api/admin/pending');
-            const deposits = await res.json();
-            const list = document.getElementById('depositList');
-            list.innerHTML = ''; 
+        const API_URL = 'https://nexusplatform.onrender.com';
 
-            deposits.forEach(dep => {
-                list.innerHTML += `
+        async function loadPending() {
+            const res = await fetch(`${API_URL}/api/admin/pending`);
+            const data = await res.json();
+            
+            // 1. Render Pending Deposits
+            const depositList = document.getElementById('depositList');
+            depositList.innerHTML = ''; 
+            (data.deposits || []).forEach(dep => {
+                depositList.innerHTML += `
                     <tr class="text-sm">
                         <td class="p-4">${dep.email}</td>
                         <td class="p-4">$${dep.amount}</td>
                         <td class="p-4">
-                            <button onclick="approve('${dep._id}')" class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded transition">Approve</button>
+                            <button onclick="approveDeposit('${dep._id}')" class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded transition">Approve Deposit</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // 2. Render Pending Withdrawals
+            const withdrawalList = document.getElementById('withdrawalList');
+            withdrawalList.innerHTML = '';
+            (data.withdrawals || []).forEach(w => {
+                withdrawalList.innerHTML += `
+                    <tr class="text-sm">
+                        <td class="p-4">${w.email}</td>
+                        <td class="p-4">$${w.amount}</td>
+                        <td class="p-4">
+                            <button onclick="approveWithdrawal('${w._id}')" class="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded transition">Approve Withdrawal</button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        async function approve(depositId) {
-            await fetch('https://nexusplatform.onrender.com/api/admin/approve-deposit', {
+        async function approveDeposit(depositId) {
+            await fetch(`${API_URL}/api/admin/approve-deposit`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ depositId })
@@ -62,43 +96,50 @@
             loadPending();
         }
 
-        // Fetch all users from the server
+        async function approveWithdrawal(withdrawalId) {
+            await fetch(`${API_URL}/api/admin/approve-withdrawal`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ withdrawalId })
+            });
+            loadPending();
+        }
 
-async function loadUsers() {
-    const response = await fetch('https://nexusplatform.onrender.com/api/admin/users');
-    const users = await response.json();
-    const list = document.getElementById('userList');
-    
-    list.innerHTML = users.map(u => `
-        <div class="p-4 border-b border-gray-800 flex justify-between items-center">
-            <div>
-                <p class="font-bold">${u.email}</p>
-                <p class="text-sm text-gray-400">Password: <span class="font-mono text-green-400">${u.password}</span></p>
-                <p class="text-sm text-gray-500">Balance: $${u.balance}</p>
-            </div>
-            <div class="space-x-2">
-                <button onclick="update('${u.email}')" class="bg-blue-600 px-3 py-1 rounded text-sm">Update</button>
-                <button onclick="deleteUser('${u.email}')" class="bg-red-600 px-3 py-1 rounded text-sm">Delete</button>
-            </div>
-        </div>
-    `).join('');
-}
+        async function loadUsers() {
+            const response = await fetch(`${API_URL}/api/admin/users`);
+            const users = await response.json();
+            const list = document.getElementById('userList');
+            
+            list.innerHTML = users.map(u => `
+                <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                    <div>
+                        <p class="font-bold">${u.email}</p>
+                        <p class="text-sm text-slate-400">Password: <span class="font-mono text-green-400">${u.password}</span></p>
+                        <p class="text-sm text-slate-500">Balance: $${u.balance}</p>
+                    </div>
+                    <div class="space-x-2">
+                        <button onclick="update('${u.email}')" class="bg-blue-600 px-3 py-1 rounded text-sm">Update</button>
+                        <button onclick="deleteUser('${u.email}')" class="bg-red-600 px-3 py-1 rounded text-sm">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-// Function to handle deletion
-async function deleteUser(email) {
-    if (confirm(`Are you sure you want to delete ${email}?`)) {
-        await fetch('https://nexusplatform.onrender.com/api/admin/delete-user', {
-            method: 'POST', // Using POST to keep it consistent with your current setup
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        });
-        loadUsers(); // Refresh the list
-    }
-}
+        async function deleteUser(email) {
+            if (confirm(`Are you sure you want to delete ${email}?`)) {
+                await fetch(`${API_URL}/api/admin/delete-user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                loadUsers();
+            }
+        }
+
         async function update(email) {
             const newBalance = prompt("Enter new balance for " + email);
             if(newBalance) {
-                await fetch('https://nexusplatform.onrender.com/api/admin/update-balance', {
+                await fetch(`${API_URL}/api/admin/update-balance`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, newBalance })
@@ -107,7 +148,6 @@ async function deleteUser(email) {
             }
         }
 
-        // Initialize both
         loadPending();
         loadUsers();
     </script>
