@@ -18,7 +18,6 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, or Postman)
     if (!origin) return callback(null, true);
     
     if (allowedOrigins.indexOf(origin) !== -1) {
@@ -32,12 +31,11 @@ app.use(cors({
 
 app.use(express.json());
 
-// Use the variable, not the hardcoded string
 const dbUri = process.env.MONGO_URI;
 
 if (!dbUri) {
     console.error("FATAL ERROR: MONGO_URI is not defined in your environment.");
-    process.exit(1); // Stop the server immediately if there is no DB URI
+    process.exit(1);
 }
 
 mongoose.connect(dbUri)
@@ -46,7 +44,9 @@ mongoose.connect(dbUri)
       console.error('❌ MongoDB connection error:', err);
       process.exit(1); 
   });
-// 2. DATABASE SCHEMAS (MODELS)
+
+// ==========================================
+// 2. DATABASE SCHEMAS (MODELS WITH PLATFORM TAGGING)
 // ==========================================
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
@@ -58,6 +58,7 @@ const userSchema = new mongoose.Schema({
     address: String,
     referralId: { type: String, default: null },
     balance: { type: Number, default: 0 },
+    platform: { type: String, default: 'chint' }, // Separates Chint Global from Nexus Invest
     createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', userSchema);
@@ -66,6 +67,7 @@ const depositSchema = new mongoose.Schema({
     email: { type: String, required: true },
     amount: { type: Number, required: true },
     status: { type: String, default: 'Pending' },
+    platform: { type: String, default: 'chint' }, // Tag deposit requests by platform
     createdAt: { type: Date, default: Date.now }
 });
 const Deposit = mongoose.model('Deposit', depositSchema);
@@ -76,6 +78,7 @@ const transactionSchema = new mongoose.Schema({
     type: { type: String, required: true },
     amount: { type: Number, required: true },
     status: { type: String, default: 'Completed' },
+    platform: { type: String, default: 'chint' },
     createdAt: { type: Date, default: Date.now }
 });
 const Transaction = mongoose.model('Transaction', transactionSchema);
@@ -83,7 +86,8 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 // ==========================================
 // 3. API ROUTES
 // ==========================================
-// 1. Update your signup route (Plain Text)
+
+// Signup Route (Tagged for Chint Global)
 app.post('/api/signup', async (req, res) => {
     try {
         const { firstName, lastName, phone, country, email, password, address, referralId } = req.body;
@@ -93,11 +97,10 @@ app.post('/api/signup', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Email already in use.' });
         }
 
-        // Save the user with the RAW plain-text password
         const newUser = new User({ 
             firstName, lastName, phone, country, email, 
-            password: password, // Store exactly what the user typed
-            address, referralId 
+            password, address, referralId,
+            platform: 'chint' // Tagged as Chint Global user
         });
         await newUser.save();
 
@@ -108,13 +111,12 @@ app.post('/api/signup', async (req, res) => {
     }
 });
 
-// 2. Update your Login Route (Plain Text Comparison)
+// Login Route
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
-        // Compare the incoming password directly with the stored plain-text password
         if (user && password === user.password) {
             res.json({ success: true, balance: user.balance });
         } else {
@@ -125,7 +127,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Get Specific User Data
+// Get User Data
 app.get('/api/user', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.query.email });
@@ -145,12 +147,16 @@ app.get('/api/user', async (req, res) => {
     }
 });
 
-// Request a Deposit
+// Request Deposit
 app.post('/api/deposit', async (req, res) => {
     try {
         const { email, amount } = req.body;
         
-        const newDeposit = new Deposit({ email, amount: parseFloat(amount) });
+        const newDeposit = new Deposit({ 
+            email, 
+            amount: parseFloat(amount),
+            platform: 'chint' // Tagged as Chint Global deposit
+        });
         await newDeposit.save();
 
         res.json({ success: true, message: 'Deposit request submitted!' });
@@ -159,20 +165,21 @@ app.post('/api/deposit', async (req, res) => {
     }
 });
 
-// Admin: Get all users
+// Admin: Get Chint Global Users ONLY
 app.get('/api/admin/users', async (req, res) => {
     try {
-        const users = await User.find({}, '-__v'); // fetch all, ignore version key
+        // Returns users registered for Chint Global (or users without an explicit platform tag)
+        const users = await User.find({ $or: [{ platform: 'chint' }, { platform: { $exists: false } }] }, '-__v');
         res.json(users);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Admin: Get all pending deposits
+// Admin: Get Pending Deposits for Chint Global ONLY
 app.get('/api/admin/pending', async (req, res) => {
     try {
-        const pendingDeposits = await Deposit.find({ status: 'Pending' });
+        const pendingDeposits = await Deposit.find({ status: 'Pending', $or: [{ platform: 'chint' }, { platform: { $exists: false } }] });
         res.json(pendingDeposits);
     } catch (error) {
         console.error("Error fetching pending deposits:", error);
@@ -180,7 +187,7 @@ app.get('/api/admin/pending', async (req, res) => {
     }
 });
 
-// Admin: Approve a deposit
+// Admin: Approve Deposit
 app.post('/api/admin/approve-deposit', async (req, res) => {
     try {
         const { depositId } = req.body;
@@ -201,7 +208,8 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
                 email: deposit.email,
                 type: 'Deposit',
                 amount: deposit.amount,
-                status: 'Completed'
+                status: 'Completed',
+                platform: 'chint'
             });
 
             deposit.status = 'Approved';
@@ -220,7 +228,6 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
 app.post('/api/admin/update-balance', async (req, res) => {
     try {
         const { email, newBalance } = req.body;
-        console.log(`DEBUG: Updating balance for ${email} to ${newBalance}`);
         
         const user = await User.findOne({ email });
         if (!user) {
@@ -230,7 +237,6 @@ app.post('/api/admin/update-balance', async (req, res) => {
         user.balance = parseFloat(newBalance);
         await user.save();
         
-        console.log("✅ Balance saved successfully!");
         res.json({ success: true, message: 'Balance updated successfully' });
     } catch (error) {
         console.error("❌ Error updating balance:", error);
@@ -267,7 +273,7 @@ app.get('/api/transactions', async (req, res) => {
     }
 });
 
-// Process User Withdrawal Request
+// Process Withdrawal
 app.post('/api/withdraw', async (req, res) => {
     try {
         const { email, amount } = req.body;
@@ -290,7 +296,8 @@ app.post('/api/withdraw', async (req, res) => {
             email,
             type: 'Withdrawal',
             amount: parseFloat(amount),
-            status: 'Completed'
+            status: 'Completed',
+            platform: 'chint'
         });
 
         res.json({ success: true, message: 'Withdrawal processed successfully!' });
