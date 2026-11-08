@@ -9,8 +9,9 @@
     
     <h1 class="text-3xl font-bold mb-8">Chint Global Admin Control Panel</h1>
     
+    <!-- Pending Deposits Section -->
     <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Pending Deposits</h2>
+        <h2 class="text-xl font-semibold mb-4 text-emerald-400">Pending Deposits</h2>
         <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
             <table class="w-full text-left">
                 <thead class="bg-slate-800">
@@ -25,6 +26,24 @@
         </div>
     </div>
 
+    <!-- Pending Withdrawals Section -->
+    <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-4 text-orange-400">Pending Withdrawals</h2>
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-800">
+                    <tr>
+                        <th class="p-4">User Email</th>
+                        <th class="p-4">Amount</th>
+                        <th class="p-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawalList" class="divide-y divide-slate-800"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- User Accounts Section -->
     <div>
         <h2 class="text-xl font-semibold mb-4">User Accounts</h2>
         <div id="userList" class="bg-slate-900 p-6 rounded-2xl border border-slate-800"></div>
@@ -35,34 +54,72 @@
 
         async function loadPending() {
             try {
-                const res = await fetch(`${API_URL}/api/admin/pending`);
-                const deposits = await res.json();
-                const list = document.getElementById('depositList');
-                list.innerHTML = ''; 
+                // Fetch Pending Deposits
+                const resDep = await fetch(`${API_URL}/api/admin/pending`);
+                const deposits = await resDep.json();
+                const depositList = document.getElementById('depositList');
+                depositList.innerHTML = ''; 
 
                 (deposits || []).forEach(dep => {
-                    list.innerHTML += `
+                    depositList.innerHTML += `
                         <tr class="text-sm">
                             <td class="p-4">${dep.email}</td>
-                            <td class="p-4">$${dep.amount}</td>
+                            <td class="p-4 text-emerald-400 font-bold">$${dep.amount}</td>
                             <td class="p-4">
-                                <button onclick="approve('${dep._id}')" class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded transition">Approve</button>
+                                <button onclick="approveDeposit('${dep._id}')" class="bg-green-600 hover:bg-green-700 px-4 py-1.5 rounded transition font-medium">Approve Deposit</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                // Fetch Pending Withdrawals
+                const resWith = await fetch(`${API_URL}/api/admin/pending-withdrawals`);
+                const withdrawals = await resWith.json();
+                const withdrawalList = document.getElementById('withdrawalList');
+                withdrawalList.innerHTML = '';
+
+                (withdrawals || []).forEach(w => {
+                    withdrawalList.innerHTML += `
+                        <tr class="text-sm">
+                            <td class="p-4">${w.email}</td>
+                            <td class="p-4 text-orange-400 font-bold">$${w.amount}</td>
+                            <td class="p-4">
+                                <button onclick="approveWithdrawal('${w._id}')" class="bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded transition font-medium">Approve Withdrawal</button>
                             </td>
                         </tr>
                     `;
                 });
             } catch (err) {
-                console.error("Error loading pending deposits:", err);
+                console.error("Error loading pending requests:", err);
             }
         }
 
-        async function approve(depositId) {
-            await fetch(`${API_URL}/api/admin/approve-deposit`, {
+        async function approveDeposit(depositId) {
+            const res = await fetch(`${API_URL}/api/admin/approve-deposit`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ depositId })
             });
-            loadPending();
+            const data = await res.json();
+            if(data.success) {
+                loadPending();
+            } else {
+                alert(data.message);
+            }
+        }
+
+        async function approveWithdrawal(withdrawalId) {
+            const res = await fetch(`${API_URL}/api/admin/approve-withdrawal`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ withdrawalId })
+            });
+            const data = await res.json();
+            if(data.success) {
+                loadPending();
+            } else {
+                alert(data.message);
+            }
         }
 
         async function loadUsers() {
