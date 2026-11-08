@@ -63,7 +63,6 @@
 
                 const data = await response.json();
                 if (data.success) {
-                    alert("Login successful!");
                     // Add this line inside your login/signup success block
                     localStorage.setItem('currentUser', email);
                     window.location.href = 'dashboard.html'; // This redirects the browser
@@ -72,7 +71,7 @@
                 }
             } catch (error) {
                 console.error("Error:", error);
-                alert("Could not connect to the server. Make sure node server.js is running!");
+                alert("Could not connect to the server.");
             }
         });
     </script>
