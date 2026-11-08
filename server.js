@@ -7,7 +7,6 @@ console.log("DEBUG: MONGO_URI is:", process.env.MONGO_URI);
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -149,7 +148,6 @@ app.get('/api/user', async (req, res) => {
     }
 });
 
-// Request Deposit (Creates Pending Deposit + Pending Transaction)
 app.post('/api/deposit', async (req, res) => {
     try {
         const { email, amount } = req.body;
@@ -177,7 +175,6 @@ app.post('/api/deposit', async (req, res) => {
     }
 });
 
-// Request Withdrawal (Creates Pending Withdrawal + Pending Transaction)
 app.post('/api/withdraw', async (req, res) => {
     try {
         const { email, amount } = req.body;
@@ -214,7 +211,6 @@ app.post('/api/withdraw', async (req, res) => {
     }
 });
 
-// Admin: Get all Pending Deposits and Withdrawals
 app.get('/api/admin/pending', async (req, res) => {
     try {
         const pendingDeposits = await Deposit.find({ status: 'Pending', $or: [{ platform: 'chint' }, { platform: { $exists: false } }] });
@@ -227,7 +223,6 @@ app.get('/api/admin/pending', async (req, res) => {
     }
 });
 
-// Admin: Approve Deposit
 app.post('/api/admin/approve-deposit', async (req, res) => {
     try {
         const { depositId } = req.body;
@@ -258,7 +253,6 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
     }
 });
 
-// Admin: Approve Withdrawal
 app.post('/api/admin/approve-withdrawal', async (req, res) => {
     try {
         const { withdrawalId } = req.body;
@@ -314,7 +308,7 @@ app.post('/api/admin/update-balance', async (req, res) => {
         await user.save();
         res.json({ success: true, message: 'Balance updated successfully' });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
