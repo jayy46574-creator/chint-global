@@ -733,7 +733,7 @@
                     </tr>`;
                 } else {
                     history.forEach(tx => {
-                        // Dynamic status badge styling
+                        // Dynamic status badge styling (Yellow for Pending, Green for Completed/Approved)
                         const isPending = tx.status === 'Pending';
                         const statusClass = isPending 
                             ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' 
@@ -753,7 +753,6 @@
 
                         // Populate notifications feed with successful/completed deposits and withdrawals
                         if (tx.status === 'Completed' || tx.status === 'Approved') {
-                            const isDeposit = tx.type.toLowerCase().includes('deposit');
                             notificationsList.innerHTML += `
                                 <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
                                     <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
@@ -910,7 +909,7 @@
             navigator.clipboard.writeText(address).then(() => alert("Wallet address copied!"));
         }
         
-        // Updated Withdraw Logic
+        // Withdrawal Logic (Submits for Admin Approval)
         document.getElementById('withdrawForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const amount = document.getElementById('withdrawAmount').value;
@@ -927,7 +926,7 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    alert("An Admin will process your withdrawal request shortly");
+                    alert("Withdrawal request submitted for approval!");
                     document.getElementById('withdrawForm').reset();
                     document.querySelector('[data-target="view-transactions"]').click();
                     loadDashboard();
