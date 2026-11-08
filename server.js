@@ -42,7 +42,9 @@ mongoose.connect(dbUri)
       process.exit(1); 
   });
 
-// SCHEMAS
+// ==========================================
+// DATABASE SCHEMAS
+// ==========================================
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -83,7 +85,9 @@ const transactionSchema = new mongoose.Schema({
 });
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
+// ==========================================
 // API ROUTES
+// ==========================================
 app.post('/api/signup', async (req, res) => {
     try {
         const { firstName, lastName, phone, country, email, password, address, referralId } = req.body;
@@ -125,13 +129,13 @@ app.get('/api/user', async (req, res) => {
     }
 });
 
-// Deposit Request (Creates Pending Deposit & Pending Transaction)
+// 1. Deposit Request -> Stored as Pending
 app.post('/api/deposit', async (req, res) => {
     try {
         const { email, amount } = req.body;
         const parsedAmount = parseFloat(amount);
         
-        const newDeposit = new Deposit({ email, amount: parsedAmount });
+        const newDeposit = new Deposit({ email, amount: parsedAmount, status: 'Pending' });
         await newDeposit.save();
 
         const txid = "TXN" + Math.floor(100000 + Math.random() * 900000);
@@ -143,13 +147,13 @@ app.post('/api/deposit', async (req, res) => {
             status: 'Pending'
         });
 
-        res.json({ success: true, message: 'Deposit request submitted!' });
+        res.json({ success: true, message: 'Deposit request submitted and pending approval.' });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 
-// Withdrawal Request (Creates Pending Withdrawal & Pending Transaction)
+// 2. Withdrawal Request -> Stored as Pending (No balance deduction until approved)
 app.post('/api/withdraw', async (req, res) => {
     try {
         const { email, amount } = req.body;
@@ -159,7 +163,7 @@ app.post('/api/withdraw', async (req, res) => {
         if (!user) return res.status(404).json({ success: false, message: 'User not found' });
         if (user.balance < parsedAmount) return res.status(400).json({ success: false, message: 'Insufficient balance' });
 
-        const newWithdrawal = new Withdrawal({ email, amount: parsedAmount });
+        const newWithdrawal = new Withdrawal({ email, amount: parsedAmount, status: 'Pending' });
         await newWithdrawal.save();
 
         const txid = "TXN" + Math.floor(100000 + Math.random() * 900000);
@@ -171,13 +175,21 @@ app.post('/api/withdraw', async (req, res) => {
             status: 'Pending'
         });
 
-        res.json({ success: true, message: 'Withdrawal request submitted for approval!' });
+        res.json({ success: true, message: 'Withdrawal request submitted for approval.' });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 
-// Admin: Get Pending Deposits (Returns Array)
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        const users = await User.find({}, '-__v');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 app.get('/api/admin/pending', async (req, res) => {
     try {
         const pendingDeposits = await Deposit.find({ status: 'Pending' });
@@ -187,7 +199,6 @@ app.get('/api/admin/pending', async (req, res) => {
     }
 });
 
-// Admin: Get Pending Withdrawals (Returns Array)
 app.get('/api/admin/pending-withdrawals', async (req, res) => {
     try {
         const pendingWithdrawals = await Withdrawal.find({ status: 'Pending' });
@@ -197,12 +208,14 @@ app.get('/api/admin/pending-withdrawals', async (req, res) => {
     }
 });
 
-// Admin: Approve Deposit
+// 3. Approve Deposit -> Updates user balance & transaction to Completed
 app.post('/api/admin/approve-deposit', async (req, res) => {
     try {
         const { depositId } = req.body;
         const deposit = await Deposit.findById(depositId);
-        if (!deposit || deposit.status !== 'Pending') return res.status(404).json({ success: false, message: 'Valid pending deposit not found' });
+        if (!deposit || deposit.status !== 'Pending') {
+            return res.status(404).json({ success: false, message: 'Pending deposit not found' });
+        }
 
         const user = await User.findOne({ email: deposit.email });
         if (user) {
@@ -217,7 +230,7 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
                 { status: 'Completed' }
             );
 
-            res.json({ success: true, message: 'Deposit approved!' });
+            res.json({ success: true, message: 'Deposit approved and balance updated.' });
         } else {
             res.status(404).json({ success: false, message: 'User not found' });
         }
@@ -226,43 +239,36 @@ app.post('/api/admin/approve-deposit', async (req, res) => {
     }
 });
 
-// Admin: Approve Withdrawal
+// 4. Approve Withdrawal -> Deducts user balance & updates transaction to Completed
 app.post('/api/admin/approve-withdrawal', async (req, res) => {
     try {
         const { withdrawalId } = req.body;
         const withdrawal = await Withdrawal.findById(withdrawalId);
-        if (!withdrawal || withdrawal.status !== 'Pending') return res.status(404).json({ success: false, message: 'Pending withdrawal not found' });
+        if (!withdrawal || withdrawal.status !== 'Pending') {
+            return res.status(404).json({ success: false, message: 'Pending withdrawal not found' });
+        }
 
         const user = await User.findOne({ email: withdrawal.email });
-        if (user) {
-            if (user.balance < withdrawal.amount) return res.status(400).json({ success: false, message: 'Insufficient user balance' });
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
-            user.balance -= withdrawal.amount;
-            await user.save();
-
-            withdrawal.status = 'Approved';
-            await withdrawal.save();
-
-            await Transaction.updateOne(
-                { email: withdrawal.email, amount: withdrawal.amount, type: 'Withdrawal', status: 'Pending' },
-                { status: 'Completed' }
-            );
-
-            res.json({ success: true, message: 'Withdrawal approved!' });
-        } else {
-            res.status(404).json({ success: false, message: 'User not found' });
+        if (user.balance < withdrawal.amount) {
+            return res.status(400).json({ success: false, message: 'Insufficient user balance' });
         }
+
+        user.balance -= withdrawal.amount;
+        await user.save();
+
+        withdrawal.status = 'Approved';
+        await withdrawal.save();
+
+        await Transaction.updateOne(
+            { email: withdrawal.email, amount: withdrawal.amount, type: 'Withdrawal', status: 'Pending' },
+            { status: 'Completed' }
+        );
+
+        res.json({ success: true, message: 'Withdrawal approved successfully.' });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
-
-app.get('/api/admin/users', async (req, res) => {
-    try {
-        const users = await User.find({}, '-__v');
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
     }
 });
 
