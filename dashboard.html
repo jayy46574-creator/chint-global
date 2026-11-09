@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chint Global - Dashboard</title>
-    <!-- Favicon Added Here -->
+    <!-- Favicon -->
     <link rel="icon" href="logo.jpeg" type="image/png">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,7 +32,6 @@
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        /* Hide scrollbar for mobile navigation */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -43,7 +42,7 @@
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col relative">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col relative">
 
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden transition-opacity backdrop-blur-sm"></div>
@@ -114,20 +113,16 @@
 
         <div class="flex-1 flex flex-col h-[calc(100vh-32px)] overflow-y-auto w-full">
 
-            <header class="h-20 px-4 md:px-8 flex items-center justify-between border-b bg-darkpanel/50 border-gray-800 sticky top-0 z-30 backdrop-blur-md text-white">
+            <!-- HEADER (Dark Blue with "Chint Global" text in white) -->
+            <header class="h-20 px-4 md:px-8 flex items-center justify-between bg-navy-900 border-b border-gray-800 sticky top-0 z-30 text-white">
                 <div class="flex items-center gap-3">
-                    <!-- Hamburger Menu Button -->
-                    <button id="menuToggle" class="md:hidden text-gray-400 hover:text-white focus:outline-none flex items-center justify-center p-1">
+                    <button id="menuToggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none flex items-center justify-center p-1">
                         <i class="ph ph-list text-3xl"></i>
                     </button>
-                    <div class="flex items-center gap-2">
-                        <img src="logo.jpeg" alt="Logo" class="w-8 h-8 rounded-md object-cover md:hidden">
-                        <h2 class="text-xl font-bold">User Portal</h2>
-                    </div>
+                    <h2 class="text-xl font-bold tracking-wider text-white">Chint Global</h2>
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <!-- Notification Bell Icon -->
                     <button data-target="view-notifications" class="relative text-gray-400 hover:text-white transition">
                         <i class="ph ph-bell text-2xl"></i>
                         <span class="absolute -top-1 -right-1 flex h-3 w-3">
@@ -136,12 +131,12 @@
                         </span>
                     </button>
 
-                    <div class="flex items-center gap-3 pl-4 border-l border-gray-700">
+                    <div class="flex items-center gap-3 pl-4 border-l border-gray-800">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 flex items-center justify-center font-bold text-white shadow-md">
                             <i class="ph ph-user text-xl"></i>
                         </div>
                         <div class="hidden sm:block text-left">
-                            <p id="userGreeting" class="text-sm font-medium">Loading...</p>
+                            <p id="userGreeting" class="text-sm font-medium text-white">Loading...</p>
                             <span class="text-xs text-green-400 flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Network Active
                             </span>
@@ -150,13 +145,14 @@
                 </div>
             </header>
 
-            <main class="p-6 md:p-8 flex-1 bg-[#0a0f18]">
-                <div class="md:hidden flex justify-between items-center bg-darkpanel p-4 border-b border-gray-800 mb-4 w-full text-white rounded-xl">
+            <!-- MAIN CONTAINER (Soft Off-White/Light Grey Theme) -->
+            <main class="p-6 md:p-8 flex-1 bg-slate-100">
+                <div class="md:hidden flex justify-between items-center bg-white p-4 border border-slate-200 mb-4 w-full text-slate-800 rounded-2xl shadow-sm">
                     <div class="flex items-center gap-2">
-                        <i class="ph ph-user-circle text-2xl text-gray-400"></i>
+                        <i class="ph ph-user-circle text-2xl text-slate-500"></i>
                         <span id="mobileUserName" class="font-semibold text-sm">Loading...</span>
                     </div>
-                    <button onclick="logout()" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center gap-1 transition">
+                    <button onclick="logout()" class="text-red-600 hover:text-red-500 text-sm font-medium flex items-center gap-1 transition">
                         <i class="ph ph-sign-out"></i> Log Out
                     </button>
                 </div>
@@ -164,7 +160,7 @@
                 <!-- DASHBOARD VIEW -->
                 <section id="view-dashboard" class="view-section active space-y-6 max-w-4xl mx-auto">
 
-                    <!-- Top Balance Card (Matched to Screenshot Layout & Colors) -->
+                    <!-- Top Balance Card -->
                     <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 flex items-center justify-between text-slate-900">
                         <div>
                             <h3 id="userBalanceText" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-1">$0.00</h3>
@@ -175,7 +171,7 @@
                         </div>
                     </div>
                     
-                    <!-- Account Status & Info Card (Matched to Screenshot Layout & Colors) -->
+                    <!-- Account Status & Info Card -->
                     <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 text-slate-900 space-y-5">
                         <h4 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">Balance</h4>
                         
@@ -186,7 +182,7 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-500 font-medium">Joined:</span>
-                                <span class="font-medium text-slate-800">Jun-24-2026</span>
+                                <span id="userJoinedDate" class="font-medium text-slate-800">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-500 font-medium">Last Login:</span>
@@ -201,45 +197,41 @@
                                     Active
                                 </span>
                             </div>
-                            <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-xs text-slate-400 font-mono">
-                                <span>IP Address</span>
-                                <span>105.113.69.156</span>
-                            </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Referral Link Card -->
-                        <div class="p-6 bg-red-950/40 rounded-3xl border border-red-900/50 text-white space-y-3 shadow-sm h-full flex flex-col justify-center">
-                            <h4 class="text-sm font-bold uppercase tracking-wider text-red-400 flex items-center gap-2">
+                        <div class="p-6 bg-white rounded-3xl border border-slate-200 text-slate-800 space-y-3 shadow-sm h-full flex flex-col justify-center">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-red-600 flex items-center gap-2">
                                 <i class="ph ph-share-network text-lg"></i> Referral Program
                             </h4>
-                            <p class="text-xs text-gray-300 leading-relaxed mb-2">
+                            <p class="text-xs text-slate-500 leading-relaxed mb-2">
                                 Automatically top up your account balance by sharing your referral link.
                             </p>
                             <div class="flex flex-col sm:flex-row items-center gap-2 pt-2">
                                 <input type="text" id="referralUrlInput" readonly value="https://chintglobal.com/?ref=user" 
-                                    class="w-full bg-slate-900 border border-red-900/60 rounded-xl px-3 py-2.5 text-xs font-mono text-amber-400 focus:outline-none">
-                                <button onclick="copyReferralLink()" class="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 flex-shrink-0">
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-700 focus:outline-none">
+                                <button onclick="copyReferralLink()" class="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 flex-shrink-0">
                                     <i class="ph ph-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
 
                         <!-- Active Plans Card -->
-                        <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800 shadow-sm h-full flex flex-col justify-center items-center text-center">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Active Plans</p>
-                            <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-2">
-                                <h3 class="text-3xl font-black font-mono text-green-400">1</h3>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm h-full flex flex-col justify-center items-center text-center">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Active Plans</p>
+                            <div class="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-2">
+                                <h3 class="text-3xl font-black font-mono text-emerald-600">1</h3>
                             </div>
-                            <p class="text-[10px] text-green-500">Yielding Returns</p>
+                            <p class="text-[10px] text-emerald-600 font-bold">Yielding Returns</p>
                         </div>
                     </div>
 
                     <!-- Bitcoin Chart Widget -->
-                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800">
-                       <h4 class="text-base font-bold mb-4 flex items-center gap-2 text-white">
-                            <i class="ph ph-chart-line-up text-blue-500"></i> Market Analysis
+                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                       <h4 class="text-base font-bold mb-4 flex items-center gap-2 text-slate-800">
+                            <i class="ph ph-chart-line-up text-blue-600"></i> Market Analysis
                         </h4>
                         <div class="tradingview-widget-container" style="height: 400px; width: 100%;">
                             <div id="tradingview_chart" style="height: 100%; width: 100%;"></div>
@@ -251,10 +243,10 @@
                                         "symbol": "BITSTAMP:BTCUSD",
                                         "interval": "D",
                                         "timezone": "Etc/UTC",
-                                        "theme": "dark",
+                                        "theme": "light",
                                         "style": "1",
                                         "locale": "en",
-                                        "toolbar_bg": "#121722",
+                                        "toolbar_bg": "#f8fafc",
                                         "enable_publishing": false,
                                         "allow_symbol_change": true,
                                         "container_id": "tradingview_chart"
@@ -265,9 +257,9 @@
                     </div>
 
                     <!-- Live Online Forex Cross Rates Widget -->
-                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800 text-white space-y-4">
-                        <h4 class="text-base font-bold flex items-center gap-2">
-                            <i class="ph ph-currency-circle-dollar text-green-400"></i> Live Forex Cross Rates
+                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                        <h4 class="text-base font-bold flex items-center gap-2 text-slate-800">
+                            <i class="ph ph-currency-circle-dollar text-emerald-600"></i> Live Forex Cross Rates
                         </h4>
                         <div class="tradingview-widget-container">
                           <div class="tradingview-widget-container__widget"></div>
@@ -285,7 +277,7 @@
                             "CAD"
                           ],
                           "isTransparent": true,
-                          "colorTheme": "dark",
+                          "colorTheme": "light",
                           "locale": "en"
                         }
                           </script>
@@ -293,15 +285,15 @@
                     </div>
 
                     <!-- Economic Calendar Widget -->
-                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800 text-white space-y-4">
-                        <h4 class="text-base font-bold flex items-center gap-2">
-                            <i class="ph ph-calendar-dots text-blue-400"></i> Market Fundamental Data (Economic Calendar)
+                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                        <h4 class="text-base font-bold flex items-center gap-2 text-slate-800">
+                            <i class="ph ph-calendar-dots text-blue-600"></i> Market Fundamental Data (Economic Calendar)
                         </h4>
                         <div class="tradingview-widget-container" style="height: 400px; width: 100%;">
                           <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
                           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
                           {
-                          "colorTheme": "dark",
+                          "colorTheme": "light",
                           "isTransparent": true,
                           "width": "100%",
                           "height": "100%",
@@ -314,25 +306,26 @@
                     </div>
                 </section>
                 
-                <!-- TRANSACTIONS VIEW -->
-                <section id="view-transactions" class="view-section hidden space-y-6 text-white max-w-5xl">
-                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800">
-                        <h3 class="text-xl font-bold mb-1 flex items-center gap-2 text-white">
+                <!-- TRANSACTIONS VIEW (Off-White Background) -->
+                <section id="view-transactions" class="view-section hidden space-y-6 max-w-5xl mx-auto">
+                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold mb-1 flex items-center gap-2 text-slate-900">
                             <i class="ph ph-list-dashes text-orange-500"></i> Transaction History
                         </h3>
-                        <p class="text-xs text-gray-400 mb-6">View all your deposits, withdrawals, and system credits.</p>
+                        <p class="text-xs text-slate-500 mb-6">View all your deposits, withdrawals, and system credits.</p>
                         
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-white">
+                            <table class="w-full text-left text-sm text-slate-800">
                                 <thead>
-                                    <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase">
+                                    <tr class="border-b border-slate-200 text-slate-500 text-xs uppercase">
                                         <th class="pb-3 px-2">TXID</th>
                                         <th class="pb-3 px-2">Type</th>
                                         <th class="pb-3 px-2">Amount</th>
+                                        <th class="pb-3 px-2">Date / Time</th>
                                         <th class="pb-3 px-2">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="transactionHistoryTable" class="divide-y divide-gray-800/40">
+                                <tbody id="transactionHistoryTable" class="divide-y divide-slate-100">
                                     <!-- Javascript will inject rows here -->
                                 </tbody>
                             </table>
@@ -341,37 +334,37 @@
                 </section>
 
                 <!-- NOTIFICATIONS VIEW -->
-                <section id="view-notifications" class="view-section hidden max-w-4xl space-y-6 text-white">
-                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800">
-                        <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
+                <section id="view-notifications" class="view-section hidden max-w-4xl space-y-6 mx-auto">
+                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-6">
                             <div>
-                                <h3 class="text-xl font-bold">Notifications</h3>
-                                <p class="text-xs text-gray-400 mt-1">Stay updated on your account activity and approvals.</p>
+                                <h3 class="text-xl font-bold text-slate-900">Notifications</h3>
+                                <p class="text-xs text-slate-500 mt-1">Stay updated on your account activity and approvals.</p>
                             </div>
-                            <button class="text-xs text-blue-400 hover:text-blue-300 font-medium">Mark all as read</button>
+                            <button class="text-xs text-blue-600 hover:text-blue-700 font-medium">Mark all as read</button>
                         </div>
                         
                         <div id="notificationsList" class="space-y-4">
                             <!-- Static Initial Notifications -->
-                            <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
-                                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                                    <i class="ph ph-info text-blue-500 text-xl"></i>
+                            <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100/80 transition">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                    <i class="ph ph-info text-blue-600 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-white mb-1">Welcome to Chint Global</h4>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
-                                    <span class="text-[10px] text-gray-500 mt-2 block">System Message</span>
+                                    <h4 class="text-sm font-bold text-slate-900 mb-1">Welcome to Chint Global</h4>
+                                    <p class="text-xs text-slate-600 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
+                                    <span class="text-[10px] text-slate-400 mt-2 block">System Message</span>
                                 </div>
                             </div>
 
-                            <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition opacity-70">
-                                <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                                    <i class="ph ph-shield-check text-green-500 text-xl"></i>
+                            <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100/80 transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                    <i class="ph ph-shield-check text-emerald-600 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-white mb-1">Account Verified</h4>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Your account has been successfully verified. You now have full access to all withdrawal features.</p>
-                                    <span class="text-[10px] text-gray-500 mt-2 block">Admin Approval</span>
+                                    <h4 class="text-sm font-bold text-slate-900 mb-1">Account Verified</h4>
+                                    <p class="text-xs text-slate-600 leading-relaxed">Your account has been successfully verified. You now have full access to all withdrawal features.</p>
+                                    <span class="text-[10px] text-slate-400 mt-2 block">Admin Approval</span>
                                 </div>
                             </div>
                         </div>
@@ -573,47 +566,55 @@
                     </form>
                 </section>
                 
-                <!-- WITHDRAW VIEW -->
-                <section id="view-withdraw" class="view-section hidden max-w-3xl p-6 bg-darkpanel rounded-3xl border border-gray-800 space-y-6 text-white">
+                <!-- WITHDRAW VIEW (Updated with USDT, BTC, ETH, BNB, TRON support) -->
+                <section id="view-withdraw" class="view-section hidden max-w-3xl p-6 bg-white rounded-3xl border border-slate-200 shadow-sm space-y-6 text-slate-800 mx-auto">
                     <div>
-                        <h3 class="text-lg font-bold">Request Withdrawal</h3>
-                        <p class="text-xs text-gray-400">Transfer funds to your external BTC wallet.</p>
+                        <h3 class="text-lg font-bold text-slate-900">Request Withdrawal</h3>
+                        <p class="text-xs text-slate-500">Transfer funds to your preferred crypto wallet address.</p>
                     </div>
-                    <hr class="border-gray-800">
+                    <hr class="border-slate-200">
 
-                    <!-- Form is now visible directly with no PIN step -->
                     <form id="withdrawForm" class="space-y-4">
                         <div>
-                            <label class="text-sm font-medium mb-1.5 block">Destination BTC Address</label>
-                            <input type="text" id="withdrawAddress" placeholder="e.g. bc1qxy..." required
-                                class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 font-mono text-sm focus:border-orange-500 focus:outline-none text-white">
+                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Select Withdrawal Asset / Network</label>
+                            <select id="withdrawAsset" onchange="updateWithdrawPlaceholder()" required
+                                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 font-sans text-sm focus:border-blue-600 focus:outline-none text-slate-800 font-medium">
+                                <option value="USDT (TRC20)">USDT (TRC20)</option>
+                                <option value="USDT (BEP20)">USDT (BEP20)</option>
+                                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                                <option value="Ethereum (ETH)">Ethereum (ETH)</option>
+                                <option value="BNB (BSC)">BNB (BSC)</option>
+                                <option value="Tron (TRX)">Tron (TRX)</option>
+                            </select>
                         </div>
                         <div>
-                            <label class="text-sm font-medium mb-1.5 block">Amount (USD)</label>
+                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Destination Wallet Address</label>
+                            <input type="text" id="withdrawAddress" placeholder="Enter your USDT (TRC20) wallet address..." required
+                                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 font-mono text-sm focus:border-blue-600 focus:outline-none text-slate-800">
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Amount (USD)</label>
                             <input type="number" id="withdrawAmount" step="1" min="1" placeholder="Enter USD amount to withdraw" required
-                                class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 font-mono text-sm focus:border-orange-500 focus:outline-none text-white">
+                                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 font-mono text-sm focus:border-blue-600 focus:outline-none text-slate-800">
                         </div>
                         <button type="submit"
-                            class="w-full bg-gradient-to-r from-orange-500 to-green-600 text-white rounded-xl py-3 font-medium text-sm hover:opacity-90 transition">Confirm
+                            class="w-full bg-blue-700 hover:bg-blue-800 text-white rounded-xl py-3 font-medium text-sm shadow-md transition">Confirm
                             Withdrawal</button>
                     </form>
                 </section>
                 
                 <!-- CONTACT VIEW -->
                 <section id="view-contact"
-                    class="view-section hidden max-w-3xl p-8 bg-darkpanel rounded-3xl border border-gray-800/80 space-y-6 shadow-xl text-white">
+                    class="view-section hidden max-w-3xl p-8 bg-white rounded-3xl border border-slate-200 space-y-6 shadow-sm text-slate-800 mx-auto">
                     <div>
-                        <h3 class="text-xl font-bold">Contact Support</h3>
-                        <h5 class="text-gray-300 mt-3"><b>Contact our team via Whatsapp </b></h5>
-                        <h5 class="text-lg text-blue-400"><b>+1 (917) 516-6009</b></h5>
-                        <br>
-                        <p class="text-sm text-gray-400 mt-1"><b>Contact our Team on this E-mail</b></p>
+                        <h3 class="text-xl font-bold text-slate-900">Contact Support</h3>
+                        <p class="text-sm text-slate-500 mt-1"><b>Contact our Team on this E-mail</b></p>
                     </div>
-                    <hr class="border-gray-800/60">
+                    <hr class="border-slate-200">
                     <div>
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexus.investment01@gmail.com"
                             target="_blank"
-                            class="text-base font-semibold text-white hover:text-orange-500 transition-colors duration-200 font-mono tracking-wide inline-block">
+                            class="text-base font-semibold text-blue-700 hover:text-blue-900 transition-colors duration-200 font-mono tracking-wide inline-block">
                             chintglobal82@gmail.com
                         </a>
                     </div>
@@ -637,16 +638,14 @@
         menuToggle.addEventListener('click', toggleSidebar);
         sidebarOverlay.addEventListener('click', toggleSidebar);
 
-        // Auto-close sidebar on mobile when a nav item is clicked
         document.querySelectorAll('#sidebar .nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (window.innerWidth < 768) { // md breakpoint
+                if (window.innerWidth < 768) {
                     sidebar.classList.add('-translate-x-full');
                     sidebarOverlay.classList.add('hidden');
                 }
             });
         });
-        // -----------------------------------
 
         document.getElementById('lastLoginTime').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         
@@ -668,6 +667,12 @@
                     if (document.getElementById('metaUsername')) document.getElementById('metaUsername').innerText = userData.firstName;
                     if (document.getElementById('referralUrlInput')) document.getElementById('referralUrlInput').value = `https://chintglobal.com/?ref=${userData.firstName}`;
 
+                    if (userData.createdAt && document.getElementById('userJoinedDate')) {
+                        const joinedDate = new Date(userData.createdAt);
+                        const options = { month: 'short', day: '2-digit', year: 'numeric' };
+                        document.getElementById('userJoinedDate').innerText = joinedDate.toLocaleDateString('en-US', options).replace(',', '');
+                    }
+
                     const usdBalance = userData.balance;
                     const formattedBalance = `$${usdBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
@@ -682,26 +687,25 @@
 
                 tableBody.innerHTML = ''; 
 
-                // Preserve static system/welcome messages in notifications list
                 notificationsList.innerHTML = `
-                    <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                            <i class="ph ph-info text-blue-500 text-xl"></i>
+                    <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100/80 transition">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                            <i class="ph ph-info text-blue-600 text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="text-sm font-bold text-white mb-1">Welcome to Chint Global</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
-                            <span class="text-[10px] text-gray-500 mt-2 block">System Message</span>
+                            <h4 class="text-sm font-bold text-slate-900 mb-1">Welcome to Chint Global</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
+                            <span class="text-[10px] text-slate-400 mt-2 block">System Message</span>
                         </div>
                     </div>
-                    <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition opacity-70">
-                        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                            <i class="ph ph-shield-check text-green-500 text-xl"></i>
+                    <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100/80 transition">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                            <i class="ph ph-shield-check text-emerald-600 text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="text-sm font-bold text-white mb-1">Account Verified</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">Your account has been successfully verified. You now have full access to all withdrawal features.</p>
-                            <span class="text-[10px] text-gray-500 mt-2 block">Admin Approval</span>
+                            <h4 class="text-sm font-bold text-slate-900 mb-1">Account Verified</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Your account has been successfully verified. You now have full access to all withdrawal features.</p>
+                            <span class="text-[10px] text-slate-400 mt-2 block">Admin Approval</span>
                         </div>
                     </div>
                 `;
@@ -709,39 +713,46 @@
                 if (history.length === 0) {
                     tableBody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="py-6 px-2 text-center text-gray-500 text-xs">No transactions recorded yet.</td>
+                        <td colspan="5" class="py-6 px-2 text-center text-slate-400 text-xs">No transactions recorded yet.</td>
                     </tr>`;
                 } else {
                     history.forEach(tx => {
-                        // Dynamic status badge styling (Yellow for Pending, Green for Completed/Approved)
                         const isPending = tx.status === 'Pending';
                         const statusClass = isPending 
-                            ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' 
-                            : 'bg-green-500/10 text-emerald-400 border border-green-500/20';
+                            ? 'bg-amber-100 text-amber-700 border border-amber-300' 
+                            : 'bg-emerald-100 text-emerald-700 border border-emerald-300';
+
+                        const txDate = tx.createdAt ? new Date(tx.createdAt).toLocaleString('en-US', {
+                            month: 'short',
+                            day: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) : 'N/A';
 
                         tableBody.innerHTML += `
-                        <tr class="hover:bg-gray-800/25">
-                            <td class="py-4 px-2 font-mono text-xs text-gray-400">${tx.txid}</td>
-                            <td class="py-4 px-2 font-medium text-gray-200">${tx.type}</td>
-                            <td class="py-4 px-2 font-mono text-orange-400">$${tx.amount.toFixed(2)}</td>
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-4 px-2 font-mono text-xs text-slate-500">${tx.txid}</td>
+                            <td class="py-4 px-2 font-medium text-slate-800">${tx.type}</td>
+                            <td class="py-4 px-2 font-mono text-emerald-600 font-bold">$${tx.amount.toFixed(2)}</td>
+                            <td class="py-4 px-2 text-xs text-slate-500 font-mono">${txDate}</td>
                             <td class="py-4 px-2">
-                                <span class="${statusClass} text-xs px-2.5 py-0.5 rounded-full inline-block">
+                                <span class="${statusClass} text-xs px-2.5 py-0.5 rounded-full inline-block font-medium">
                                     ${tx.status}
                                 </span>
                             </td>
                         </tr>`;
 
-                        // Populate notifications feed with successful/completed deposits and withdrawals
                         if (tx.status === 'Completed' || tx.status === 'Approved') {
                             notificationsList.innerHTML += `
-                                <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
-                                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                                        <i class="ph ph-check-circle text-emerald-400 text-xl"></i>
+                                <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100/80 transition">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                        <i class="ph ph-check-circle text-emerald-600 text-xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="text-sm font-bold text-white mb-1">${tx.type} Successful</h4>
-                                        <p class="text-xs text-gray-400 leading-relaxed">Your ${tx.type.toLowerCase()} of <b>$${tx.amount.toFixed(2)}</b> (TXID: ${tx.txid}) has been successfully processed and approved.</p>
-                                        <span class="text-[10px] text-gray-500 mt-2 block">${new Date(tx.createdAt || Date.now()).toLocaleDateString()}</span>
+                                        <h4 class="text-sm font-bold text-slate-900 mb-1">${tx.type} Successful</h4>
+                                        <p class="text-xs text-slate-600 leading-relaxed">Your ${tx.type.toLowerCase()} of <b>$${tx.amount.toFixed(2)}</b> (TXID: ${tx.txid}) has been successfully processed and approved.</p>
+                                        <span class="text-[10px] text-slate-400 mt-2 block">${new Date(tx.createdAt || Date.now()).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             `;
@@ -775,23 +786,12 @@
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) targetSection.classList.remove('hidden');
 
-                // Update styling for sidebar elements only
                 if (button.classList.contains('nav-btn')) {
                     document.querySelectorAll('.nav-btn').forEach(btn => {
                         btn.classList.remove('bg-gray-800/40', 'text-white');
                         btn.classList.add('text-gray-400');
                     });
                     button.classList.add('bg-gray-800/40', 'text-white');
-                    button.classList.remove('text-gray-400');
-                }
-
-                // Update styling for mobile nav elements only
-                if (button.classList.contains('mobile-nav')) {
-                    document.querySelectorAll('.mobile-nav').forEach(btn => {
-                        btn.classList.remove('bg-gray-900', 'text-white');
-                        btn.classList.add('text-gray-400');
-                    });
-                    button.classList.add('bg-gray-900', 'text-white');
                     button.classList.remove('text-gray-400');
                 }
             });
@@ -802,7 +802,6 @@
             window.location.href = 'login.html';
         }
         
-        // Deposit Plan Selection Logic
         function selectPlan(planId) {
             const allPlans = document.querySelectorAll('.plan-card');
             
@@ -840,7 +839,6 @@
             document.getElementById('selectedPlanInput').value = planId;
         }
 
-        // Deposit Logic
         document.getElementById('depositForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const amount = document.getElementById('depositAmount').value;
@@ -890,25 +888,30 @@
             const address = document.getElementById(elementId).innerText.trim();
             navigator.clipboard.writeText(address).then(() => alert("Wallet address copied!"));
         }
+
+        function updateWithdrawPlaceholder() {
+            const asset = document.getElementById('withdrawAsset').value;
+            document.getElementById('withdrawAddress').placeholder = `Enter your ${asset} wallet address...`;
+        }
         
-        // Withdrawal Logic (Submits for Admin Approval)
         document.getElementById('withdrawForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const amount = document.getElementById('withdrawAmount').value;
             const address = document.getElementById('withdrawAddress').value;
+            const asset = document.getElementById('withdrawAsset').value;
             const email = localStorage.getItem('currentUser');
 
             try {
                 const response = await fetch('https://nexusplatform.onrender.com/api/withdraw', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, amount, address })
+                    body: JSON.stringify({ email, amount, address, asset })
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    alert("Withdrawal request submitted for approval!");
+                    alert(`Withdrawal request for $${amount} (${asset}) submitted for approval!`);
                     document.getElementById('withdrawForm').reset();
                     document.querySelector('[data-target="view-transactions"]').click();
                     loadDashboard();
