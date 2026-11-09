@@ -182,7 +182,7 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-500 font-medium">Joined:</span>
-                                <span id="userJoinedDate" class="font-medium text-slate-800"></span>
+                                <span id="userJoinedDate" class="font-medium text-slate-800">Loading</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-500 font-medium">Last Login:</span>
@@ -646,6 +646,15 @@
                 }
             });
         });
+        
+        if (userData.createdAt) {
+    const joinedDate = new Date(userData.createdAt);
+    document.getElementById('userJoinedDate').innerText = joinedDate.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: '2-digit', 
+        year: 'numeric' 
+    }).replace(',', '');
+}
 
         document.getElementById('lastLoginTime').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         
