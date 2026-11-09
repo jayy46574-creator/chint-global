@@ -2,58 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chint Global Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chint Global - Admin Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="bg-slate-950 text-white p-10">
-    <h1 class="text-3xl font-bold mb-8">Chint Global Admin Control Panel</h1>
-    
-    <!-- Pending Deposits Section -->
-    <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4 text-emerald-400">Pending Deposits</h2>
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
-            <table class="w-full text-left">
-                <thead class="bg-slate-800">
-                    <tr>
-                        <th class="p-4">User Email</th>
-                        <th class="p-4">Amount</th>
-                        <th class="p-4">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="depositList" class="divide-y divide-slate-800"></tbody>
-            </table>
-        </div>
-    </div>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-6 md:p-10 font-sans">
+    <div class="max-w-7xl mx-auto space-y-10">
+        <header class="flex justify-between items-center border-b border-slate-800 pb-6">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">Chint Global Admin Panel</h1>
+                <p class="text-xs text-slate-400 mt-1">Manage user deposits, pending withdrawals, and account balances.</p>
+            </div>
+            <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2">
+                <i class="ph ph-arrows-clockwise text-sm"></i> Refresh Data
+            </button>
+        </header>
 
-    <!-- Pending Withdrawals Section -->
-    <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4 text-orange-400">Pending Withdrawals</h2>
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
-            <table class="w-full text-left text-sm">
-                <thead class="bg-slate-800">
-                    <tr>
-                        <th class="p-4">User Email</th>
-                        <th class="p-4">Asset</th>
-                        <th class="p-4">Destination Wallet Address</th>
-                        <th class="p-4">Amount</th>
-                        <th class="p-4">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="withdrawalList" class="divide-y divide-slate-800"></tbody>
-            </table>
-        </div>
-    </div>
+        <!-- Pending Deposits Section -->
+        <section class="space-y-4">
+            <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                <i class="ph ph-arrow-circle-down"></i> Pending Deposits
+            </h2>
+            <div class="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-800/80 text-slate-400 text-xs uppercase">
+                            <tr>
+                                <th class="p-4">User Email</th>
+                                <th class="p-4">Amount</th>
+                                <th class="p-4">Date</th>
+                                <th class="p-4">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="depositList" class="divide-y divide-slate-800/50">
+                            <tr><td colspan="4" class="p-6 text-center text-slate-500 text-xs">Loading pending deposits...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-    <!-- User Accounts Section -->
-    <div>
-        <h2 class="text-xl font-semibold mb-4">User Accounts</h2>
-        <div id="userList" class="bg-slate-900 p-6 rounded-2xl border border-slate-800"></div>
+        <!-- Pending Withdrawals Section -->
+        <section class="space-y-4">
+            <h2 class="text-lg font-bold text-orange-400 flex items-center gap-2">
+                <i class="ph ph-arrow-circle-up"></i> Pending Withdrawals
+            </h2>
+            <div class="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-800/80 text-slate-400 text-xs uppercase">
+                            <tr>
+                                <th class="p-4">User Email</th>
+                                <th class="p-4">Asset</th>
+                                <th class="p-4">Destination Wallet Address</th>
+                                <th class="p-4">Amount</th>
+                                <th class="p-4">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdrawalList" class="divide-y divide-slate-800/50">
+                            <tr><td colspan="5" class="p-6 text-center text-slate-500 text-xs">Loading pending withdrawals...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Accounts Section -->
+        <section class="space-y-4">
+            <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2">
+                <i class="ph ph-users"></i> Registered User Accounts
+            </h2>
+            <div id="userList" class="bg-slate-900 rounded-3xl border border-slate-800 p-6 shadow-xl space-y-4">
+                <p class="text-slate-500 text-xs text-center py-4">Loading user accounts...</p>
+            </div>
+        </section>
     </div>
 
     <script>
         const API_URL = 'https://nexusplatform.onrender.com';
 
-        async function loadPending() {
+        async function loadAdminData() {
             try {
                 // Fetch Pending Deposits
                 const resDep = await fetch(`${API_URL}/api/admin/pending`);
@@ -61,17 +90,23 @@
                 const depositList = document.getElementById('depositList');
                 depositList.innerHTML = ''; 
 
-                (deposits || []).forEach(dep => {
-                    depositList.innerHTML += `
-                        <tr class="text-sm">
-                            <td class="p-4">${dep.email}</td>
-                            <td class="p-4 text-emerald-400 font-bold">$${dep.amount}</td>
-                            <td class="p-4">
-                                <button onclick="approveDeposit('${dep._id}')" class="bg-green-600 hover:bg-green-700 px-4 py-1.5 rounded transition font-medium">Approve Deposit</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                if (!deposits || deposits.length === 0) {
+                    depositList.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-500 text-xs">No pending deposits.</td></tr>`;
+                } else {
+                    deposits.forEach(dep => {
+                        const depDate = dep.createdAt ? new Date(dep.createdAt).toLocaleString() : 'N/A';
+                        depositList.innerHTML += `
+                            <tr class="text-sm hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-medium">${dep.email}</td>
+                                <td class="p-4 text-emerald-400 font-bold">$${dep.amount.toFixed(2)}</td>
+                                <td class="p-4 text-xs text-slate-400 font-mono">${depDate}</td>
+                                <td class="p-4">
+                                    <button onclick="approveDeposit('${dep._id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl transition text-xs font-semibold shadow-sm">Approve Deposit</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
 
                 // Fetch Pending Withdrawals
                 const resWith = await fetch(`${API_URL}/api/admin/pending-withdrawals`);
@@ -80,28 +115,48 @@
                 withdrawalList.innerHTML = '';
 
                 if (!withdrawals || withdrawals.length === 0) {
-                    withdrawalList.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No pending withdrawals.</td></tr>`;
-                    return;
+                    withdrawalList.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 text-xs">No pending withdrawals.</td></tr>`;
+                } else {
+                    withdrawals.forEach(w => {
+                        const walletAddress = (w.address && w.address.trim() !== '') ? w.address : '<span class="text-amber-400 italic">Not specified (Legacy request)</span>';
+
+                        withdrawalList.innerHTML += `
+                            <tr class="hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-medium">${w.email}</td>
+                                <td class="p-4 font-bold text-blue-400">${w.asset || 'BTC'}</td>
+                                <td class="p-4 font-mono text-xs text-slate-200 select-all bg-slate-800/60 p-2.5 rounded-lg border border-slate-700">${walletAddress}</td>
+                                <td class="p-4 text-orange-400 font-bold">$${w.amount.toFixed(2)}</td>
+                                <td class="p-4">
+                                    <button onclick="approveWithdrawal('${w._id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition text-xs font-semibold shadow-sm">Approve Withdrawal</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
                 }
 
-                withdrawals.forEach(w => {
-                    // Fallback so old legacy requests never show raw N/A
-                    const walletAddress = (w.address && w.address.trim() !== '') ? w.address : '<span class="text-amber-400 italic">Not specified (Legacy request)</span>';
-
-                    withdrawalList.innerHTML += `
-                        <tr>
-                            <td class="p-4 font-medium">${w.email}</td>
-                            <td class="p-4 font-bold text-blue-400">${w.asset || 'BTC'}</td>
-                            <td class="p-4 font-mono text-xs text-slate-200 select-all bg-slate-800/80 p-2 rounded">${walletAddress}</td>
-                            <td class="p-4 text-orange-400 font-bold">$${w.amount.toFixed(2)}</td>
-                            <td class="p-4">
-                                <button onclick="approveWithdrawal('${w._id}')" class="bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded transition font-medium text-xs">Approve Withdrawal</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                // Fetch Users
+                const response = await fetch(`${API_URL}/api/admin/users`);
+                const users = await response.json();
+                const userList = document.getElementById('userList');
+                
+                if (!users || users.length === 0) {
+                    userList.innerHTML = `<p class="text-slate-500 text-xs text-center py-4">No users found.</p>`;
+                } else {
+                    userList.innerHTML = users.map(u => `
+                        <div class="p-4 bg-slate-800/40 rounded-2xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:bg-slate-800/60 transition">
+                            <div>
+                                <p class="font-bold text-white text-sm">${u.email} <span class="text-xs text-slate-400 font-normal">(${u.firstName} ${u.lastName})</span></p>
+                                <p class="text-xs text-slate-400 mt-1">Password: <span class="font-mono text-emerald-400">${u.password}</span> | Balance: <span class="font-mono text-white font-bold">$${u.balance.toFixed(2)}</span></p>
+                            </div>
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <button onclick="updateBalance('${u.email}')" class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition">Update Balance</button>
+                                <button onclick="deleteUser('${u.email}')" class="flex-1 sm:flex-none bg-red-600/80 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition">Delete</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
             } catch (err) {
-                console.error("Error loading pending requests:", err);
+                console.error("Error loading admin data:", err);
             }
         }
 
@@ -112,7 +167,7 @@
                 body: JSON.stringify({ depositId })
             });
             const data = await res.json();
-            if(data.success) { loadPending(); } else { alert(data.message); }
+            if(data.success) { loadAdminData(); alert("Deposit approved successfully!"); } else { alert(data.message); }
         }
 
         async function approveWithdrawal(withdrawalId) {
@@ -122,58 +177,35 @@
                 body: JSON.stringify({ withdrawalId })
             });
             const data = await res.json();
-            if(data.success) { loadPending(); } else { alert(data.message); }
-        }
-
-        async function loadUsers() {
-            try {
-                const response = await fetch(`${API_URL}/api/admin/users`);
-                const users = await response.json();
-                const list = document.getElementById('userList');
-                
-                list.innerHTML = (users || []).map(u => `
-                    <div class="p-4 border-b border-slate-800 flex justify-between items-center">
-                        <div>
-                            <p class="font-bold">${u.email}</p>
-                            <p class="text-sm text-slate-400">Password: <span class="font-mono text-green-400">${u.password}</span></p>
-                            <p class="text-sm text-slate-500">Balance: $${u.balance}</p>
-                        </div>
-                        <div class="space-x-2">
-                            <button onclick="update('${u.email}')" class="bg-blue-600 px-3 py-1 rounded text-sm">Update</button>
-                            <button onclick="deleteUser('${u.email}')" class="bg-red-600 px-3 py-1 rounded text-sm">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (err) {
-                console.error("Error loading users:", err);
-            }
+            if(data.success) { loadAdminData(); alert("Withdrawal approved successfully!"); } else { alert(data.message); }
         }
 
         async function deleteUser(email) {
-            if (confirm(`Are you sure you want to delete ${email}?`)) {
-                await fetch(`${API_URL}/api/admin/delete-user`, {
+            if (confirm(`Are you sure you want to delete user ${email}?`)) {
+                const res = await fetch(`${API_URL}/api/admin/delete-user`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
                 });
-                loadUsers();
+                const data = await res.json();
+                if(data.success) { loadAdminData(); } else { alert(data.message); }
             }
         }
 
-        async function update(email) {
-            const newBalance = prompt("Enter new balance for " + email);
-            if(newBalance) {
-                await fetch(`${API_URL}/api/admin/update-balance`, {
+        async function updateBalance(email) {
+            const newBalance = prompt("Enter new balance for " + email + ":");
+            if(newBalance !== null && newBalance.trim() !== '') {
+                const res = await fetch(`${API_URL}/api/admin/update-balance`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, newBalance })
                 });
-                loadUsers();
+                const data = await res.json();
+                if(data.success) { loadAdminData(); alert("Balance updated successfully!"); } else { alert(data.message); }
             }
         }
 
-        loadPending();
-        loadUsers();
+        loadAdminData();
     </script>
 </body>
 </html>
