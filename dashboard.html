@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,8 @@
               brandBlue: {
                 DEFAULT: '#1e40af',
                 hover: '#1d4ed8',
-              }
+              },
+              darkpanel: '#111827'
             }
           }
         }
@@ -41,7 +42,7 @@
     </style>
 </head>
 
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col relative">
+<body class="bg-[#0a0f18] text-white font-sans min-h-screen flex flex-col relative">
 
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden transition-opacity backdrop-blur-sm"></div>
@@ -113,20 +114,19 @@
 
         <div class="flex-1 flex flex-col h-[calc(100vh-32px)] overflow-y-auto w-full">
 
-            <!-- CLEAN WHITE HEADER WITH BRAND LOGO -->
-            <header class="h-20 px-4 md:px-8 flex items-center justify-between bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm text-slate-800">
+            <!-- HEADER (DARK BLUE WITH CHINT GLOBAL HEADING) -->
+            <header class="h-20 px-4 md:px-8 flex items-center justify-between border-b bg-darkpanel/80 border-gray-800 sticky top-0 z-30 backdrop-blur-md text-white">
                 <div class="flex items-center gap-3">
-                    <button id="menuToggle" class="md:hidden text-slate-600 hover:text-slate-900 focus:outline-none flex items-center justify-center p-1">
+                    <button id="menuToggle" class="md:hidden text-gray-400 hover:text-white focus:outline-none flex items-center justify-center p-1">
                         <i class="ph ph-list text-3xl"></i>
                     </button>
-                    <div class="flex items-center gap-3">
-                        <img src="logo.jpeg" alt="Chint Global Logo" class="w-9 h-9 rounded-xl object-cover shadow-sm">
-                        <h2 class="text-xl font-bold tracking-wider text-slate-900">User Portal</h2>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-xl font-bold tracking-wide text-white">Chint Global</h2>
                     </div>
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <button data-target="view-notifications" class="relative text-slate-500 hover:text-slate-800 transition">
+                    <button data-target="view-notifications" class="relative text-gray-400 hover:text-white transition">
                         <i class="ph ph-bell text-2xl"></i>
                         <span class="absolute -top-1 -right-1 flex h-3 w-3">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -134,13 +134,13 @@
                         </span>
                     </button>
 
-                    <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
-                        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 shadow-sm">
+                    <div class="flex items-center gap-3 pl-4 border-l border-gray-700">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 flex items-center justify-center font-bold text-white shadow-md">
                             <i class="ph ph-user text-xl"></i>
                         </div>
                         <div class="hidden sm:block text-left">
-                            <p id="userGreeting" class="text-sm font-semibold text-slate-900">Loading...</p>
-                            <span class="text-xs text-green-600 font-medium flex items-center gap-1">
+                            <p id="userGreeting" class="text-sm font-medium text-white">Loading...</p>
+                            <span class="text-xs text-green-400 flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Network Active
                             </span>
                         </div>
@@ -148,14 +148,14 @@
                 </div>
             </header>
 
-            <!-- MAIN CONTENT AREA (LIGHT WHITE/GRAY THEME) -->
-            <main class="p-6 md:p-8 flex-1 bg-slate-100">
-                <div class="md:hidden flex justify-between items-center bg-white p-4 border border-slate-200 mb-4 w-full text-slate-800 rounded-2xl shadow-sm">
+            <!-- MAIN CONTAINER (DARK BLUE BACKGROUND & WHITE TEXT) -->
+            <main class="p-6 md:p-8 flex-1 bg-[#0a0f18]">
+                <div class="md:hidden flex justify-between items-center bg-darkpanel p-4 border border-gray-800 mb-4 w-full text-white rounded-xl shadow-sm">
                     <div class="flex items-center gap-2">
-                        <i class="ph ph-user-circle text-2xl text-slate-500"></i>
+                        <i class="ph ph-user-circle text-2xl text-gray-400"></i>
                         <span id="mobileUserName" class="font-semibold text-sm">Loading...</span>
                     </div>
-                    <button onclick="logout()" class="text-red-600 hover:text-red-500 text-sm font-medium flex items-center gap-1 transition">
+                    <button onclick="logout()" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center gap-1 transition">
                         <i class="ph ph-sign-out"></i> Log Out
                     </button>
                 </div>
@@ -163,47 +163,49 @@
                 <!-- DASHBOARD VIEW -->
                 <section id="view-dashboard" class="view-section active space-y-6">
 
-                    <!-- Balance Card (Clean White Theme) -->
-                    <div class="p-8 bg-white rounded-3xl border border-slate-200 relative overflow-hidden shadow-sm text-slate-900">
-                        <i class="ph ph-wallet absolute right-0 top-0 p-6 opacity-5 text-blue-600 text-9xl"></i>
-                        <p class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-6">Total Available Balance</p>
+                    <!-- Balance Card -->
+                    <div class="p-8 bg-navy-900 rounded-3xl border border-slate-700 relative overflow-hidden shadow-lg text-white col-span-1 lg:col-span-2">
+                        <i class="ph ph-wallet absolute right-0 top-0 p-6 opacity-10 text-blue-500 text-9xl"></i>
+                        <p class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-6">Total Available Balance</p>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-700">
                             <div>
-                                <p class="text-xs font-semibold text-slate-500 mb-2">Fiat Value (USD)</p>
-                                <h3 id="userBalanceText" class="text-4xl font-black font-mono text-slate-900">$0.00</h3>
+                                <p class="text-xs text-slate-400 mb-2">Fiat Value (USD)</p>
+                                <h3 id="userBalanceText" class="text-4xl font-black font-mono text-white">$0.00</h3>
                             </div>
 
                             <div class="md:pl-8 pt-6 md:pt-0">
-                                <p class="text-xs font-semibold text-slate-500 mb-2">Cryptocurrency (BTC)</p>
-                                <h3 id="balanceDisplayBTC" class="text-4xl font-black font-mono text-slate-900">0.00000000 BTC</h3>
+                                <p class="text-xs text-slate-400 mb-2">Cryptocurrency (BTC)</p>
+                                <h3 id="balanceDisplayBTC" class="text-4xl font-black font-mono text-white">0.00000000 BTC</h3>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Account Status & Info Card (White Background) -->
-                    <div class="p-6 bg-white rounded-3xl border border-slate-200 text-slate-900 shadow-sm space-y-5">
-                        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-                            <i class="ph ph-identification-badge text-blue-600 text-xl"></i> User Profile Details
+                    <!-- User Profile Details Card -->
+                    <div class="p-6 bg-gradient-to-br from-navy-900 to-darkpanel rounded-3xl border border-blue-900/40 text-white shadow-xl space-y-5 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+                        
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2 relative z-10">
+                            <i class="ph ph-identification-badge text-blue-500 text-xl"></i> User Profile Details
                         </h4>
                         
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                                <span class="text-slate-500 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-user"></i> Username</span>
-                                <span id="metaUsername" class="font-mono font-bold text-sm text-slate-900">Loading...</span>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs relative z-10">
+                            <div class="bg-gray-900/60 backdrop-blur-sm p-4 rounded-2xl border border-gray-800">
+                                <span class="text-slate-400 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-user"></i> Username</span>
+                                <span id="metaUsername" class="font-mono font-bold text-sm text-white">Loading...</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                                <span class="text-slate-500 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-calendar-plus"></i> Joined Date</span>
-                                <span id="userJoinedDate" class="font-mono font-bold text-sm text-slate-900">Loading...</span>
+                            <div class="bg-gray-900/60 backdrop-blur-sm p-4 rounded-2xl border border-gray-800">
+                                <span class="text-slate-400 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-calendar-plus"></i> Joined Date</span>
+                                <span id="userJoinedDate" class="font-mono font-medium text-sm text-slate-200">Loading...</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                                <span class="text-slate-500 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-clock-counter-clockwise"></i> Last Login</span>
-                                <span class="font-mono font-bold text-sm text-slate-900" id="lastLoginTime">Loading...</span>
+                            <div class="bg-gray-900/60 backdrop-blur-sm p-4 rounded-2xl border border-gray-800">
+                                <span class="text-slate-400 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-clock-counter-clockwise"></i> Last Login</span>
+                                <span class="font-mono font-medium text-sm text-slate-200" id="lastLoginTime">Loading...</span>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-start">
-                                <span class="text-slate-500 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-shield-check"></i> Account Status</span>
-                                <span class="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1 rounded-lg font-bold text-xs">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span> Active
+                            <div class="bg-gray-900/60 backdrop-blur-sm p-4 rounded-2xl border border-gray-800 flex flex-col justify-center items-start">
+                                <span class="text-slate-400 block mb-1.5 flex items-center gap-1.5"><i class="ph ph-shield-check"></i> Account Status</span>
+                                <span class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-lg font-bold text-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active
                                 </span>
                             </div>
                         </div>
@@ -211,36 +213,36 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Referral Link Card -->
-                        <div class="p-6 bg-white rounded-3xl border border-slate-200 text-slate-800 space-y-3 shadow-sm h-full flex flex-col justify-center">
-                            <h4 class="text-sm font-bold uppercase tracking-wider text-red-600 flex items-center gap-2">
+                        <div class="p-6 bg-red-950/40 rounded-3xl border border-red-900/50 text-white space-y-3 shadow-sm h-full flex flex-col justify-center">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-red-400 flex items-center gap-2">
                                 <i class="ph ph-share-network text-lg"></i> Referral Program
                             </h4>
-                            <p class="text-xs text-slate-500 leading-relaxed mb-2">
+                            <p class="text-xs text-gray-300 leading-relaxed mb-2">
                                 Automatically top up your account balance by sharing your referral link.
                             </p>
                             <div class="flex flex-col sm:flex-row items-center gap-2 pt-2">
                                 <input type="text" id="referralUrlInput" readonly value="https://chintglobal.com/?ref=user" 
-                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-800 focus:outline-none">
-                                <button onclick="copyReferralLink()" class="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 flex-shrink-0">
+                                    class="w-full bg-slate-900 border border-red-900/60 rounded-xl px-3 py-2.5 text-xs font-mono text-amber-400 focus:outline-none">
+                                <button onclick="copyReferralLink()" class="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 flex-shrink-0">
                                     <i class="ph ph-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
 
                         <!-- Active Plans Card -->
-                        <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm h-full flex flex-col justify-center items-center text-center">
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Active Plans</p>
-                            <div class="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-2">
-                                <h3 class="text-3xl font-black font-mono text-emerald-600">1</h3>
+                        <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800 shadow-sm h-full flex flex-col justify-center items-center text-center">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Active Plans</p>
+                            <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-2">
+                                <h3 class="text-3xl font-black font-mono text-green-400">1</h3>
                             </div>
-                            <p class="text-[10px] text-emerald-600 font-bold">Yielding Returns</p>
+                            <p class="text-[10px] text-green-500">Yielding Returns</p>
                         </div>
                     </div>
 
-                    <!-- Bitcoin Chart Widget (Light Theme) -->
-                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                       <h4 class="text-base font-bold mb-4 flex items-center gap-2 text-slate-800">
-                            <i class="ph ph-chart-line-up text-blue-600"></i> Market Analysis
+                    <!-- Bitcoin Chart Widget -->
+                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800">
+                       <h4 class="text-base font-bold mb-4 flex items-center gap-2 text-white">
+                            <i class="ph ph-chart-line-up text-blue-500"></i> Market Analysis
                         </h4>
                         <div class="tradingview-widget-container" style="height: 400px; width: 100%;">
                             <div id="tradingview_chart" style="height: 100%; width: 100%;"></div>
@@ -252,10 +254,10 @@
                                         "symbol": "BITSTAMP:BTCUSD",
                                         "interval": "D",
                                         "timezone": "Etc/UTC",
-                                        "theme": "light",
+                                        "theme": "dark",
                                         "style": "1",
                                         "locale": "en",
-                                        "toolbar_bg": "#f8fafc",
+                                        "toolbar_bg": "#121722",
                                         "enable_publishing": false,
                                         "allow_symbol_change": true,
                                         "container_id": "tradingview_chart"
@@ -266,9 +268,9 @@
                     </div>
 
                     <!-- Live Online Forex Cross Rates Widget -->
-                    <div class="p-6 bg-white rounded-3xl border border-slate-200 text-slate-800 space-y-4 shadow-sm">
+                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800 text-white space-y-4">
                         <h4 class="text-base font-bold flex items-center gap-2">
-                            <i class="ph ph-currency-circle-dollar text-emerald-600"></i> Live Forex Cross Rates
+                            <i class="ph ph-currency-circle-dollar text-green-400"></i> Live Forex Cross Rates
                         </h4>
                         <div class="tradingview-widget-container">
                           <div class="tradingview-widget-container__widget"></div>
@@ -286,7 +288,7 @@
                             "CAD"
                           ],
                           "isTransparent": true,
-                          "colorTheme": "light",
+                          "colorTheme": "dark",
                           "locale": "en"
                         }
                           </script>
@@ -294,15 +296,15 @@
                     </div>
 
                     <!-- Economic Calendar Widget -->
-                    <div class="p-6 bg-white rounded-3xl border border-slate-200 text-slate-800 space-y-4 shadow-sm">
+                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800 text-white space-y-4">
                         <h4 class="text-base font-bold flex items-center gap-2">
-                            <i class="ph ph-calendar-dots text-blue-600"></i> Market Fundamental Data (Economic Calendar)
+                            <i class="ph ph-calendar-dots text-blue-400"></i> Market Fundamental Data (Economic Calendar)
                         </h4>
                         <div class="tradingview-widget-container" style="height: 400px; width: 100%;">
                           <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
                           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
                           {
-                          "colorTheme": "light",
+                          "colorTheme": "dark",
                           "isTransparent": true,
                           "width": "100%",
                           "height": "100%",
@@ -315,25 +317,26 @@
                     </div>
                 </section>
                 
-                <!-- TRANSACTIONS VIEW -->
-                <section id="view-transactions" class="view-section hidden space-y-6 max-w-5xl">
-                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                        <h3 class="text-xl font-bold mb-1 flex items-center gap-2 text-slate-900">
+                <!-- TRANSACTIONS VIEW (WITH DATE & TIME COLUMN) -->
+                <section id="view-transactions" class="view-section hidden space-y-6 text-white max-w-5xl">
+                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800">
+                        <h3 class="text-xl font-bold mb-1 flex items-center gap-2 text-white">
                             <i class="ph ph-list-dashes text-orange-500"></i> Transaction History
                         </h3>
-                        <p class="text-xs text-slate-500 mb-6">View all your deposits, withdrawals, and system credits.</p>
+                        <p class="text-xs text-gray-400 mb-6">View all your deposits, withdrawals, and system credits.</p>
                         
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-slate-800">
+                            <table class="w-full text-left text-sm text-white">
                                 <thead>
-                                    <tr class="border-b border-slate-200 text-slate-500 text-xs uppercase">
+                                    <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase">
                                         <th class="pb-3 px-2">TXID</th>
                                         <th class="pb-3 px-2">Type</th>
                                         <th class="pb-3 px-2">Amount</th>
+                                        <th class="pb-3 px-2">Date & Time</th>
                                         <th class="pb-3 px-2">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="transactionHistoryTable" class="divide-y divide-slate-100">
+                                <tbody id="transactionHistoryTable" class="divide-y divide-gray-800/40">
                                     <!-- Javascript will inject rows here -->
                                 </tbody>
                             </table>
@@ -342,25 +345,25 @@
                 </section>
 
                 <!-- NOTIFICATIONS VIEW -->
-                <section id="view-notifications" class="view-section hidden max-w-4xl space-y-6 text-slate-800">
-                    <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+                <section id="view-notifications" class="view-section hidden max-w-4xl space-y-6 text-white">
+                    <div class="p-6 bg-darkpanel rounded-3xl border border-gray-800">
+                        <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
                             <div>
-                                <h3 class="text-xl font-bold text-slate-900">Notifications</h3>
-                                <p class="text-xs text-slate-500 mt-1">Stay updated on your account activity and approvals.</p>
+                                <h3 class="text-xl font-bold">Notifications</h3>
+                                <p class="text-xs text-gray-400 mt-1">Stay updated on your account activity and approvals.</p>
                             </div>
-                            <button class="text-xs text-blue-600 hover:text-blue-700 font-medium">Mark all as read</button>
+                            <button class="text-xs text-blue-400 hover:text-blue-300 font-medium">Mark all as read</button>
                         </div>
                         
                         <div id="notificationsList" class="space-y-4">
-                            <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                    <i class="ph ph-info text-blue-600 text-xl"></i>
+                            <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
+                                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="ph ph-info text-blue-500 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-slate-900 mb-1">Welcome to Chint Global</h4>
-                                    <p class="text-xs text-slate-600 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
-                                    <span class="text-[10px] text-slate-400 mt-2 block">System Message</span>
+                                    <h4 class="text-sm font-bold text-white mb-1">Welcome to Chint Global</h4>
+                                    <p class="text-xs text-gray-400 leading-relaxed">Thank you for registering. Make your first deposit to start building your portfolio.</p>
+                                    <span class="text-[10px] text-gray-500 mt-2 block">System Message</span>
                                 </div>
                             </div>
                         </div>
@@ -368,19 +371,19 @@
                 </section>
                 
                 <!-- DEPOSIT VIEW -->
-                <section id="view-deposit" class="view-section hidden max-w-5xl p-6 bg-white rounded-3xl border border-slate-200 space-y-6 shadow-sm mx-auto">
+                <section id="view-deposit" class="view-section hidden max-w-5xl p-6 bg-darkpanel rounded-3xl border border-gray-800 space-y-6 shadow-sm mx-auto text-white">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900">Initiate Secure Deposit</h3>
-                        <p class="text-xs text-slate-500">Select your preferred investment plan and transfer funds to the target address.</p>
+                        <h3 class="text-xl font-bold text-white">Initiate Secure Deposit</h3>
+                        <p class="text-xs text-gray-400">Select your preferred investment plan and transfer funds to the target address.</p>
                     </div>
 
                     <!-- 1. INVESTMENT PLANS SECTION -->
                     <div class="space-y-4">
-                        <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wide">1. Choose Investment Plan</h4>
+                        <h4 class="text-sm font-bold text-gray-300 uppercase tracking-wide">1. Choose Investment Plan</h4>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <!-- Basic Plan -->
-                            <div onclick="selectPlan('basic')" id="plan-basic" class="plan-card cursor-pointer bg-slate-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative">
+                            <div onclick="selectPlan('basic')" id="plan-basic" class="plan-card cursor-pointer bg-navy-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative">
                                 <h4 class="font-bold text-white text-lg mb-1">Basic Plan</h4>
                                 <div class="flex items-end gap-1 mb-4">
                                     <span class="text-3xl font-black text-white">0.75%</span>
@@ -394,7 +397,7 @@
                             </div>
 
                             <!-- Bronze Plan -->
-                            <div onclick="selectPlan('bronze')" id="plan-bronze" class="plan-card cursor-pointer bg-slate-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative">
+                            <div onclick="selectPlan('bronze')" id="plan-bronze" class="plan-card cursor-pointer bg-navy-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative">
                                 <h4 class="font-bold text-white text-lg mb-1">Bronze Plan</h4>
                                 <div class="flex items-end gap-1 mb-4">
                                     <span class="text-3xl font-black text-white">1.50%</span>
@@ -423,7 +426,7 @@
                             </div>
 
                             <!-- Golden Plan -->
-                            <div onclick="selectPlan('golden')" id="plan-golden" class="plan-card cursor-pointer bg-slate-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative">
+                            <div onclick="selectPlan('golden')" id="plan-golden" class="plan-card cursor-pointer bg-navy-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative">
                                 <h4 class="font-bold text-white text-lg mb-1">Golden Plan</h4>
                                 <div class="flex items-end gap-1 mb-4">
                                     <span class="text-3xl font-black text-white">3.50%</span>
@@ -438,22 +441,22 @@
                         </div>
                     </div>
 
-                    <hr class="border-slate-200">
+                    <hr class="border-gray-800">
 
                     <!-- 2. PAYMENT NETWORK SECTION -->
                     <div class="space-y-4">
-                        <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wide">2. Select Payment Network</h4>
+                        <h4 class="text-sm font-bold text-gray-300 uppercase tracking-wide">2. Select Payment Network</h4>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <button type="button" onclick="switchDepositTab('bnb')" id="tab-bnb" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-blue-600 bg-blue-50 text-blue-700 transition flex items-center justify-center gap-1.5">
+                            <button type="button" onclick="switchDepositTab('bnb')" id="tab-bnb" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-blue-600 bg-blue-600/20 text-blue-400 transition flex items-center justify-center gap-1.5">
                                 <i class="ph ph-currency-bnb text-base"></i> BNB (BSC)
                             </button>
-                            <button type="button" onclick="switchDepositTab('btc')" id="tab-btc" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
+                            <button type="button" onclick="switchDepositTab('btc')" id="tab-btc" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-gray-800 bg-gray-900 text-gray-400 hover:bg-gray-800 transition flex items-center justify-center gap-1.5">
                                 <i class="ph ph-currency-btc text-base"></i> Bitcoin
                             </button>
-                            <button type="button" onclick="switchDepositTab('eth')" id="tab-eth" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
+                            <button type="button" onclick="switchDepositTab('eth')" id="tab-eth" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-gray-800 bg-gray-900 text-gray-400 hover:bg-gray-800 transition flex items-center justify-center gap-1.5">
                                 <i class="ph ph-currency-eth text-base"></i> Ethereum
                             </button>
-                            <button type="button" onclick="switchDepositTab('tron')" id="tab-tron" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
+                            <button type="button" onclick="switchDepositTab('tron')" id="tab-tron" class="deposit-tab py-2.5 px-3 text-xs font-bold rounded-xl border border-gray-800 bg-gray-900 text-gray-400 hover:bg-gray-800 transition flex items-center justify-center gap-1.5">
                                 <i class="ph ph-lightning text-base"></i> Tron
                             </button>
                         </div>
@@ -462,118 +465,118 @@
                     <div id="wallet-panels-container">
                         <!-- 1. BNB Panel -->
                         <div class="wallet-panel space-y-4" data-wallet="bnb">
-                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-inner text-white">
+                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-navy-900 p-4 rounded-xl border border-gray-800 shadow-inner text-white">
                                 <div class="p-2 bg-white rounded-lg flex-shrink-0">
                                     <img src="bnb-qr.png" alt="BNB QR Code" class="w-28 h-28 object-contain">
                                 </div>
                                 <div class="overflow-hidden w-full space-y-2">
                                     <p class="text-xs text-slate-400">Scan or copy BNB Smart Chain Address:</p>
-                                    <div id="addr-bnb" class="font-mono text-xs sm:text-sm text-yellow-400 select-all break-all tracking-wide font-bold bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                                    <div id="addr-bnb" class="font-mono text-xs sm:text-sm text-yellow-400 select-all break-all tracking-wide font-bold bg-gray-800/80 p-2.5 rounded-lg border border-gray-700">
                                         0xF06D383ECDCE556F336CbEb1983e0d168BE21579
                                     </div>
-                                    <button type="button" onclick="copyAddress('addr-bnb')" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
+                                    <button type="button" onclick="copyAddress('addr-bnb')" class="text-xs text-slate-300 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
                                         <i class="ph ph-copy"></i> Copy BNB Address
                                     </button>
                                 </div>
                             </div>
-                            <span class="text-xs text-amber-600 flex items-center gap-1">
+                            <span class="text-xs text-amber-500 flex items-center gap-1">
                                 <span>⚠️</span> Send only BNB Smart Chain (BEP20) assets.
                             </span>
                         </div>
 
                         <!-- 2. BTC Panel -->
                         <div class="wallet-panel space-y-4 hidden" data-wallet="btc">
-                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-inner text-white">
+                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-navy-900 p-4 rounded-xl border border-gray-800 shadow-inner text-white">
                                 <div class="p-2 bg-white rounded-lg flex-shrink-0">
                                     <img src="btc-qr.png" alt="BTC QR Code" class="w-28 h-28 object-contain">
                                 </div>
                                 <div class="overflow-hidden w-full space-y-2">
                                     <p class="text-xs text-slate-400">Scan or copy Bitcoin Address:</p>
-                                    <div id="addr-btc" class="font-mono text-xs sm:text-sm text-orange-400 select-all break-all tracking-wide font-bold bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                                    <div id="addr-btc" class="font-mono text-xs sm:text-sm text-orange-400 select-all break-all tracking-wide font-bold bg-gray-800/80 p-2.5 rounded-lg border border-gray-700">
                                         bc1qgxelv7ppumdhaht68t8hy95q6e04w5kmu0y9md
                                     </div>
-                                    <button type="button" onclick="copyAddress('addr-btc')" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
+                                    <button type="button" onclick="copyAddress('addr-btc')" class="text-xs text-slate-300 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
                                         <i class="ph ph-copy"></i> Copy BTC Address
                                     </button>
                                 </div>
                             </div>
-                            <span class="text-xs text-amber-600 flex items-center gap-1">
+                            <span class="text-xs text-amber-500 flex items-center gap-1">
                                 <span>⚠️</span> Send only native Bitcoin (BTC).
                             </span>
                         </div>
 
                         <!-- 3. ETH Panel -->
                         <div class="wallet-panel space-y-4 hidden" data-wallet="eth">
-                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-inner text-white">
+                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-navy-900 p-4 rounded-xl border border-gray-800 shadow-inner text-white">
                                 <div class="p-2 bg-white rounded-lg flex-shrink-0">
                                     <img src="eth-qr.png" alt="ETH QR Code" class="w-28 h-28 object-contain">
                                 </div>
                                 <div class="overflow-hidden w-full space-y-2">
                                     <p class="text-xs text-slate-400">Scan or copy Ethereum Address:</p>
-                                    <div id="addr-eth" class="font-mono text-xs sm:text-sm text-indigo-400 select-all break-all tracking-wide font-bold bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                                    <div id="addr-eth" class="font-mono text-xs sm:text-sm text-indigo-400 select-all break-all tracking-wide font-bold bg-gray-800/80 p-2.5 rounded-lg border border-gray-700">
                                         0xF06D383ECDCE556F336CbEb1983e0d168BE21579
                                     </div>
-                                    <button type="button" onclick="copyAddress('addr-eth')" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
+                                    <button type="button" onclick="copyAddress('addr-eth')" class="text-xs text-slate-300 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
                                         <i class="ph ph-copy"></i> Copy ETH Address
                                     </button>
                                 </div>
                             </div>
-                            <span class="text-xs text-amber-600 flex items-center gap-1">
+                            <span class="text-xs text-amber-500 flex items-center gap-1">
                                 <span>⚠️</span> Send only ERC-20 assets.
                             </span>
                         </div>
 
                         <!-- 4. Tron Panel -->
                         <div class="wallet-panel space-y-4 hidden" data-wallet="tron">
-                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-inner text-white">
+                            <div class="flex flex-col sm:flex-row items-center gap-4 bg-navy-900 p-4 rounded-xl border border-gray-800 shadow-inner text-white">
                                 <div class="p-2 bg-white rounded-lg flex-shrink-0">
                                     <img src="tron-qr.png" alt="Tron QR Code" class="w-28 h-28 object-contain">
                                 </div>
                                 <div class="overflow-hidden w-full space-y-2">
                                     <p class="text-xs text-slate-400">Scan or copy Tron Address:</p>
-                                    <div id="addr-tron" class="font-mono text-xs sm:text-sm text-red-400 select-all break-all tracking-wide font-bold bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                                    <div id="addr-tron" class="font-mono text-xs sm:text-sm text-red-400 select-all break-all tracking-wide font-bold bg-gray-800/80 p-2.5 rounded-lg border border-gray-700">
                                         TVujXNu67Vr9xbWG89fFN85E56bf5XuUuv
                                     </div>
-                                    <button type="button" onclick="copyAddress('addr-tron')" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
+                                    <button type="button" onclick="copyAddress('addr-tron')" class="text-xs text-slate-300 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-md font-medium transition inline-flex items-center gap-1">
                                         <i class="ph ph-copy"></i> Copy Tron Address
                                     </button>
                                 </div>
                             </div>
-                            <span class="text-xs text-amber-600 flex items-center gap-1">
+                            <span class="text-xs text-amber-500 flex items-center gap-1">
                                 <span>⚠️</span> Send only TRC20 network assets.
                             </span>
                         </div>
                     </div>
 
-                    <hr class="border-slate-200">
+                    <hr class="border-gray-800">
 
                     <!-- 3. CONFIRMATION FORM -->
                     <form id="depositForm" class="space-y-4">
                         <input type="hidden" id="selectedPlanInput" value="silver">
                         <div>
-                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Amount (USD)</label>
+                            <label class="text-sm font-medium mb-1.5 block text-gray-300">Amount (USD)</label>
                             <input type="number" id="depositAmount" step="1" placeholder="Enter USD amount (e.g. 500)"
                                 required
-                                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 font-mono text-sm focus:border-blue-600 focus:outline-none text-slate-800">
+                                class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 font-mono text-sm focus:border-blue-600 focus:outline-none text-white">
                         </div>
                         <button type="submit"
-                            class="w-full bg-blue-700 hover:bg-blue-800 text-white rounded-xl py-3 font-medium text-sm shadow-md transition">Confirm
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-medium text-sm shadow-md transition">Confirm
                             Payment Broadcast</button>
                     </form>
                 </section>
                 
-                <!-- WITHDRAW VIEW (White Theme & Asset Dropdown) -->
-                <section id="view-withdraw" class="view-section hidden max-w-3xl p-6 bg-white rounded-3xl border border-slate-200 space-y-6 shadow-sm text-slate-800 mx-auto">
+                <!-- WITHDRAW VIEW (DARK THEME WITH ASSET SELECTION) -->
+                <section id="view-withdraw" class="view-section hidden max-w-3xl p-6 bg-darkpanel rounded-3xl border border-gray-800 space-y-6 text-white mx-auto">
                     <div>
-                        <h3 class="text-lg font-bold text-slate-900">Request Withdrawal</h3>
-                        <p class="text-xs text-slate-500">Transfer funds to your external crypto wallet.</p>
+                        <h3 class="text-lg font-bold text-white">Request Withdrawal</h3>
+                        <p class="text-xs text-gray-400">Transfer funds to your external crypto wallet.</p>
                     </div>
-                    <hr class="border-slate-200">
+                    <hr class="border-gray-800">
 
                     <form id="withdrawForm" class="space-y-4">
                         <div>
-                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Select Withdrawal Asset / Network</label>
-                            <select id="withdrawAsset" onchange="updateWithdrawPlaceholder()" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm text-slate-800 font-medium focus:border-blue-600 focus:outline-none">
+                            <label class="text-sm font-medium mb-1.5 block text-gray-300">Select Withdrawal Asset / Network</label>
+                            <select id="withdrawAsset" onchange="updateWithdrawPlaceholder()" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white font-medium focus:border-blue-600 focus:outline-none">
                                 <option value="USDT (TRC20)">USDT (TRC20)</option>
                                 <option value="USDT (BEP20)">USDT (BEP20)</option>
                                 <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
@@ -583,35 +586,35 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Destination Wallet Address</label>
+                            <label class="text-sm font-medium mb-1.5 block text-gray-300">Destination Wallet Address</label>
                             <input type="text" id="withdrawAddress" placeholder="Enter USDT (TRC20) wallet address..." required
-                                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 font-mono text-sm text-slate-800 focus:border-blue-600 focus:outline-none">
+                                class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 font-mono text-sm text-white focus:border-blue-600 focus:outline-none">
                         </div>
                         <div>
-                            <label class="text-sm font-medium mb-1.5 block text-slate-700">Amount (USD)</label>
+                            <label class="text-sm font-medium mb-1.5 block text-gray-300">Amount (USD)</label>
                             <input type="number" id="withdrawAmount" step="1" min="1" placeholder="Enter USD amount to withdraw" required
-                                class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 font-mono text-sm text-slate-800 focus:border-blue-600 focus:outline-none">
+                                class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 font-mono text-sm text-white focus:border-blue-600 focus:outline-none">
                         </div>
                         <button type="submit"
-                            class="w-full bg-blue-700 hover:bg-blue-800 text-white rounded-xl py-3 font-medium text-sm shadow-md transition">Confirm Withdrawal</button>
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-medium text-sm shadow-md transition">Confirm Withdrawal</button>
                     </form>
                 </section>
                 
-                <!-- CONTACT VIEW (White Theme) -->
+                <!-- CONTACT VIEW (DARK THEME) -->
                 <section id="view-contact"
-                    class="view-section hidden max-w-3xl p-8 bg-white rounded-3xl border border-slate-200 space-y-6 shadow-sm text-slate-800 mx-auto">
+                    class="view-section hidden max-w-3xl p-8 bg-darkpanel rounded-3xl border border-gray-800 space-y-6 shadow-sm text-white mx-auto">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900">Contact Support</h3>
-                        <h5 class="text-slate-600 mt-3"><b>Contact our team via Whatsapp </b></h5>
-                        <h5 class="text-lg text-blue-700"><b>+1 (917) 516-6009</b></h5>
+                        <h3 class="text-xl font-bold text-white">Contact Support</h3>
+                        <h5 class="text-gray-300 mt-3"><b>Contact our team via Whatsapp </b></h5>
+                        <h5 class="text-lg text-blue-400"><b>+1 (917) 516-6009</b></h5>
                         <br>
-                        <p class="text-sm text-slate-500 mt-1"><b>Contact our Team on this E-mail</b></p>
+                        <p class="text-sm text-gray-400 mt-1"><b>Contact our Team on this E-mail</b></p>
                     </div>
-                    <hr class="border-slate-200">
+                    <hr class="border-gray-800">
                     <div>
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nexus.investment01@gmail.com"
                             target="_blank"
-                            class="text-base font-semibold text-blue-700 hover:text-blue-900 transition-colors duration-200 font-mono tracking-wide inline-block">
+                            class="text-base font-semibold text-blue-400 hover:text-blue-300 transition-colors duration-200 font-mono tracking-wide inline-block">
                             chintglobal82@gmail.com
                         </a>
                     </div>
@@ -704,17 +707,29 @@
                 if (history.length === 0) {
                     tableBody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="py-6 px-2 text-center text-slate-400 text-xs">No transactions recorded yet.</td>
+                        <td colspan="5" class="py-6 px-2 text-center text-gray-500 text-xs">No transactions recorded yet.</td>
                     </tr>`;
                 } else {
                     history.forEach(tx => {
+                        // Date and Time formatting
+                        const txDateObj = tx.createdAt ? new Date(tx.createdAt) : new Date();
+                        const formattedDateTime = txDateObj.toLocaleString('en-US', {
+                            month: 'short',
+                            day: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+
                         tableBody.innerHTML += `
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-2 font-mono text-xs text-slate-500">${tx.txid}</td>
-                            <td class="py-4 px-2 font-medium text-slate-800">${tx.type}</td>
-                            <td class="py-4 px-2 font-mono text-emerald-600 font-bold">+$${tx.amount.toFixed(2)}</td>
+                        <tr class="hover:bg-gray-800/20">
+                            <td class="py-4 px-2 font-mono text-xs text-gray-500">${tx.txid}</td>
+                            <td class="py-4 px-2 font-medium text-gray-200">${tx.type}</td>
+                            <td class="py-4 px-2 font-mono text-emerald-400">+$${tx.amount.toFixed(2)}</td>
+                            <td class="py-4 px-2 font-mono text-xs text-gray-400">${formattedDateTime}</td>
                             <td class="py-4 px-2">
-                                <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full border border-emerald-300 font-semibold">
+                                <span class="bg-green-500/10 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full border border-green-500/20">
                                     ${tx.status}
                                 </span>
                             </td>
@@ -722,14 +737,14 @@
 
                         if (tx.status === 'Completed' || tx.status === 'Approved') {
                             notificationsList.innerHTML += `
-                            <div class="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition">
-                                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                                    <i class="ph ph-shield-check text-emerald-600 text-xl"></i>
+                            <div class="flex gap-4 p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50 hover:bg-gray-800/60 transition">
+                                <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="ph ph-shield-check text-green-500 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-slate-900 mb-1">${tx.type} Approved</h4>
-                                    <p class="text-xs text-slate-600 leading-relaxed">Your ${tx.type.toLowerCase()} of $${tx.amount.toFixed(2)} has been processed and confirmed.</p>
-                                    <span class="text-[10px] text-slate-400 mt-2 block">${new Date(tx.createdAt || Date.now()).toLocaleDateString()}</span>
+                                    <h4 class="text-sm font-bold text-white mb-1">${tx.type} Approved</h4>
+                                    <p class="text-xs text-gray-400 leading-relaxed">Your ${tx.type.toLowerCase()} of $${tx.amount.toFixed(2)} has been processed and confirmed.</p>
+                                    <span class="text-[10px] text-gray-500 mt-2 block">${formattedDateTime}</span>
                                 </div>
                             </div>`;
                         }
@@ -782,7 +797,7 @@
             const allPlans = document.querySelectorAll('.plan-card');
             
             allPlans.forEach(plan => {
-                plan.className = 'plan-card cursor-pointer bg-slate-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative';
+                plan.className = 'plan-card cursor-pointer bg-navy-900 border-2 border-transparent rounded-2xl p-5 hover:border-blue-500 transition relative';
                 plan.querySelector('h4').className = 'font-bold text-white text-lg mb-1';
                 plan.querySelector('.text-3xl').className = 'text-3xl font-black text-white';
                 plan.querySelector('.text-\[10px\]').className = 'text-[10px] text-slate-400 mb-1.5 uppercase font-bold tracking-wide';
@@ -848,14 +863,14 @@
         function switchDepositTab(coin) {
             document.querySelectorAll('.wallet-panel').forEach(panel => panel.classList.add('hidden'));
             document.querySelectorAll('.deposit-tab').forEach(tab => {
-                tab.classList.remove('border-blue-600', 'bg-blue-50', 'text-blue-700');
-                tab.classList.add('border-slate-200', 'bg-slate-50', 'text-slate-600');
+                tab.classList.remove('border-blue-600', 'bg-blue-600/20', 'text-blue-400');
+                tab.classList.add('border-gray-800', 'bg-gray-900', 'text-gray-400');
             });
 
             document.querySelector(`[data-wallet="${coin}"]`).classList.remove('hidden');
             const activeTab = document.getElementById(`tab-${coin}`);
-            activeTab.classList.remove('border-slate-200', 'bg-slate-50', 'text-slate-600');
-            activeTab.classList.add('border-blue-600', 'bg-blue-50', 'text-blue-700');
+            activeTab.classList.remove('border-gray-800', 'bg-gray-900', 'text-gray-400');
+            activeTab.classList.add('border-blue-600', 'bg-blue-600/20', 'text-blue-400');
         }
 
         function copyAddress(elementId) {
