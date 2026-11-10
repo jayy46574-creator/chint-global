@@ -107,32 +107,35 @@
                         `;
                     });
                 }
+        // Fetch Pending Withdrawals
+        const resWith = await fetch(`${API_URL}/api/admin/pending-withdrawals`);
+        const withdrawals = await resWith.json();
+        const withdrawalList = document.getElementById('withdrawalList');
+        withdrawalList.innerHTML = '';
 
-                // Fetch Pending Withdrawals
-                const resWith = await fetch(`${API_URL}/api/admin/pending-withdrawals`);
-                const withdrawals = await resWith.json();
-                const withdrawalList = document.getElementById('withdrawalList');
-                withdrawalList.innerHTML = '';
+        if (!withdrawals || withdrawals.length === 0) {
+            withdrawalList.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 text-xs">No pending withdrawals.</td></tr>`;
+        } else {
+            withdrawals.forEach(w => {
+            // Checks both w.address and w.walletAddress so old and new entries render correctly
+            const addrVal = w.address || w.walletAddress;
+            const walletAddress = (addrVal && addrVal.trim() !== '' && addrVal !== 'N/A') 
+            ? addrVal 
+            : '<span class="text-amber-400 italic">Not specified (Legacy request)</span>';
 
-                if (!withdrawals || withdrawals.length === 0) {
-                    withdrawalList.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 text-xs">No pending withdrawals.</td></tr>`;
-                } else {
-                    withdrawals.forEach(w => {
-                        const walletAddress = (w.address && w.address.trim() !== '') ? w.address : '<span class="text-amber-400 italic">Not specified (Legacy request)</span>';
-
-                        withdrawalList.innerHTML += `
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="p-4 font-medium">${w.email}</td>
-                                <td class="p-4 font-bold text-blue-400">${w.asset || 'BTC'}</td>
-                                <td class="p-4 font-mono text-xs text-slate-200 select-all bg-slate-800/60 p-2.5 rounded-lg border border-slate-700">${walletAddress}</td>
-                                <td class="p-4 text-orange-400 font-bold">$${w.amount.toFixed(2)}</td>
-                                <td class="p-4">
-                                    <button onclick="approveWithdrawal('${w._id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition text-xs font-semibold shadow-sm">Approve Withdrawal</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                }
+            withdrawalList.innerHTML += `
+                <tr class="hover:bg-slate-800/30 transition">
+                    <td class="p-4 font-medium">${w.email}</td>
+                    <td class="p-4 font-bold text-blue-400">${w.asset || 'BTC'}</td>
+                    <td class="p-4 font-mono text-xs text-slate-200 select-all bg-slate-800/60 p-2.5 rounded-lg border border-slate-700">${walletAddress}</td>
+                    <td class="p-4 text-orange-400 font-bold">$${w.amount.toFixed(2)}</td>
+                    <td class="p-4">
+                        <button onclick="approveWithdrawal('${w._id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition text-xs font-semibold shadow-sm">Approve Withdrawal</button>
+                    </td>
+                </tr>
+            `;
+            });
+        }
 
                 // Fetch Users
                 const response = await fetch(`${API_URL}/api/admin/users`);
