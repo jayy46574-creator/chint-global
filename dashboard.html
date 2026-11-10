@@ -206,6 +206,8 @@
 
                         <div class="flex items-center gap-2 text-xs text-slate-500 pt-2 border-t border-slate-300/70 font-mono">
                             <i class="ph ph-globe text-sm"></i>
+                            <span>IP Address <strong id="userIpAddress" class="text-slate-700">105.113.69.156</strong></span>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -676,7 +678,7 @@
                     if (document.getElementById('mobileUserName')) document.getElementById('mobileUserName').innerText = `${userData.firstName} ${userData.lastName}`;
                     if (document.getElementById('bannerUserName')) document.getElementById('bannerUserName').innerText = `${userData.firstName} ${userData.lastName}`;
                     if (document.getElementById('metaUsername')) document.getElementById('metaUsername').innerText = userData.firstName;
-                    if (document.getElementById('referralUrlInput')) document.getElementById('referralUrlInput').value = `https://chintglobal.com/?ref=${userData.firstName}`;
+                    if (document.getElementById('referralUrlInput')) document.getElementById('referralUrlInput').value = `https://chint-global.vercel.app/?ref=${userData.firstName}`;
 
                     if (document.getElementById('userJoinedDate')) {
                         let joinedDateObj = null;
@@ -895,7 +897,7 @@
             navigator.clipboard.writeText(address).then(() => alert("Wallet address copied!"));
         }
 
-        infoWithdrawPlaceholder = function() {
+        function updateWithdrawPlaceholder() {
             const asset = document.getElementById('withdrawAsset').value;
             document.getElementById('withdrawAddress').placeholder = `Enter your ${asset} destination address...`;
         }
@@ -911,7 +913,13 @@
                 const response = await fetch('https://nexusplatform.onrender.com/api/withdraw', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, amount, address, asset })
+                    body: JSON.stringify({ 
+                        email, 
+                        amount, 
+                        address: address,
+                        walletAddress: address,
+                        asset 
+                    })
                 });
 
                 const data = await response.json();
