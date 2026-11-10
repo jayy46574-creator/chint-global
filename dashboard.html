@@ -163,19 +163,6 @@
                 <!-- DASHBOARD VIEW -->
                 <section id="view-dashboard" class="view-section active space-y-5">
 
-                    <!-- USER BANNER CARD (User Name & Logout) -->
-                    <div class="bg-[#121a29] border border-slate-800/80 rounded-2xl p-4 sm:p-5 flex justify-between items-center text-slate-200 shadow-md">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
-                                <i class="ph ph-user text-xl"></i>
-                            </div>
-                            <span id="bannerUserName" class="font-bold text-base sm:text-lg text-white">Loading...</span>
-                        </div>
-                        <button onclick="logout()" class="text-red-400 hover:text-red-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition">
-                            <i class="ph ph-sign-out text-base"></i> Log Out
-                        </button>
-                    </div>
-
                     <!-- TOP ACCOUNT BALANCE CARD -->
                     <div class="p-6 bg-[#e2e8f0] rounded-2xl border border-slate-300 shadow-md flex justify-between items-center text-slate-900">
                         <div class="w-12 h-12 rounded-full bg-[#4f46e5]/10 border border-[#4f46e5]/30 flex items-center justify-center text-[#4f46e5]">
@@ -219,8 +206,6 @@
 
                         <div class="flex items-center gap-2 text-xs text-slate-500 pt-2 border-t border-slate-300/70 font-mono">
                             <i class="ph ph-globe text-sm"></i>
-                            <span>IP Address <strong id="userIpAddress" class="text-slate-700">105.113.69.156</strong></span>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -233,7 +218,7 @@
                                 Automatically top up your account balance by sharing your referral link.
                             </p>
                             <div class="flex flex-col sm:flex-row items-center gap-2 pt-1">
-                                <input type="text" id="referralUrlInput" readonly value="https://chintglobal.com/?ref=user" 
+                                <input type="text" id="referralUrlInput" readonly value="https://chint-global.vercel.app/?ref=user" 
                                     class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none">
                                 <button onclick="copyReferralLink()" class="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center justify-center gap-1.5 flex-shrink-0">
                                     <i class="ph ph-copy"></i> Copy
